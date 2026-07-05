@@ -427,8 +427,87 @@ def ground_mesh(crop_laz, window, grid_m):
     c = idx[1:, :-1].ravel()
     d = idx[1:, 1:].ravel()
     F = np.vstack([np.column_stack([a, b2, d]), np.column_stack([a, d, c])])
-    return V, F
+    return V, F, Z
 
+
+
+
+# --------------------------------------------- etape 8c : arbres individuels
+def trees_extract(crop_laz, window, Zdtm, dtm_grid_m):
+    """Arbres INDIVIDUELS depuis les classes vegetation 3-5 : portage de l'algorithme
+    navigateur valide (_uhiBuildLidarTrees) : canopee 1 m (lecture en chunks), cimes =
+    maxima locaux 5x5 (seuil 2,5 m), houppier = distance ou la canopee retombe sous 25 %
+    de la cime (moyenne 4 directions), suppression des jupes du plus haut au plus bas,
+    plafond 5000 arbres (les plus hauts d'abord). Sortie : [x_rel, y_rel, z_sol, h, r]
+    en metres, x/y RELATIFS AU CENTRE SNAPPE (meme repere que le GLB), z_sol ABSOLU."""
+    import laspy
+    from scipy import ndimage
+
+    minx, miny, maxx, maxy = window
+    N = int(round(maxx - minx))          # grille canopee fixe 1 m
+    veg = np.full(N * N, -np.inf, dtype=np.float32)
+    n_veg = 0
+    with laspy.open(crop_laz) as rd:
+        for pts in rd.chunk_iterator(4_000_000):
+            cls = np.asarray(pts.classification)
+            keep = (cls >= 3) & (cls <= 5)
+            if not keep.any():
+                continue
+            x = np.asarray(pts.x)[keep]
+            y = np.asarray(pts.y)[keep]
+            z = np.asarray(pts.z)[keep]
+            n_veg += int(keep.sum())
+            ix = np.clip((x - minx).astype(np.int64), 0, N - 1)
+            iy = np.clip((y - miny).astype(np.int64), 0, N - 1)
+            np.maximum.at(veg, iy * N + ix, z.astype(np.float32))
+    if n_veg == 0:
+        return []
+    veg = veg.reshape(N, N)
+    # sol sous chaque cellule 1 m : plus proche voisin de la grille DTM (pas dtm_grid_m)
+    Nd = Zdtm.shape[0]
+    ii = np.clip(((np.arange(N) + 0.5) / dtm_grid_m).astype(np.int64), 0, Nd - 1)
+    dtm1 = Zdtm[np.ix_(ii, ii)].astype(np.float32)
+    chm = np.where(np.isfinite(veg), veg - dtm1, 0.0).astype(np.float32)
+    chm[chm < 0] = 0.0
+    MINH = 2.5
+    mx = ndimage.maximum_filter(chm, size=5, mode="nearest")
+    cand = np.argwhere((chm >= MINH) & (chm >= mx))   # [j, i]
+    if not len(cand):
+        return []
+    order = np.argsort(-chm[cand[:, 0], cand[:, 1]])
+    taken = np.zeros((N, N), dtype=bool)
+    trees = []
+
+    def rdir(gi, gj, di, dj, hp):
+        r = 0
+        for k in range(1, 13):
+            p = gi + di * k
+            q = gj + dj * k
+            if p < 0 or p >= N or q < 0 or q >= N:
+                break
+            if chm[q, p] < 0.25 * hp:
+                break
+            r = k
+        return r
+
+    for oi in order:
+        gj, gi = int(cand[oi, 0]), int(cand[oi, 1])
+        if taken[gj, gi]:
+            continue
+        hp = float(chm[gj, gi])
+        r4 = (rdir(gi, gj, 1, 0, hp) + rdir(gi, gj, -1, 0, hp)
+              + rdir(gi, gj, 0, 1, hp) + rdir(gi, gj, 0, -1, hp)) / 4.0
+        crown = max(1.5, min(9.0, r4 + 0.5))
+        trees.append([round((gi + 0.5) - N / 2.0, 1), round((gj + 0.5) - N / 2.0, 1),
+                      round(float(dtm1[gj, gi]), 1), round(hp, 1), round(crown, 1)])
+        if len(trees) >= 5000:
+            break
+        rc = max(2, int(round(crown)))
+        j0, j1 = max(0, gj - rc), min(N - 1, gj + rc)
+        i0, i1 = max(0, gi - rc), min(N - 1, gi + rc)
+        jj, iq = np.ogrid[j0:j1 + 1, i0:i1 + 1]
+        taken[j0:j1 + 1, i0:i1 + 1] |= ((jj - gj) ** 2 + (iq - gi) ** 2 <= rc * rc)
+    return trees
 
 # ---------------------------------------------- etape 9 : GLB + materiaux gris
 def export_glb(Vb, Fb, Vg, Fg, snx, sny, out_glb):
@@ -584,8 +663,17 @@ def main():
         log("  %d features maillees, %d sommets, %d triangles"
             % (n_meshed, len(Vb), len(Fb)))
     with Chrono("8b maillage sol"):
-        Vg, Fg = ground_mesh(crop_laz, window, max(1.0, side / 500.0))
+        Vg, Fg, Zg = ground_mesh(crop_laz, window, max(1.0, side / 500.0))
         log("  sol : %d sommets, %d triangles" % (len(Vg), len(Fg)))
+
+    # 8c. arbres individuels (canopee LiDAR) -> glb/<cle>.trees.json
+    with Chrono("8c arbres"):
+        arbres = trees_extract(crop_laz, window, Zg, max(1.0, side / 500.0))
+        trees_path = os.path.join(GLB_DIR, key + ".trees.json")
+        with open(trees_path, "w", encoding="utf-8") as f:
+            json.dump({"version": 1, "cote_m": int(side), "n": len(arbres), "arbres": arbres},
+                      f, separators=(",", ":"))
+        log("  %d arbres -> %s" % (len(arbres), trees_path))
 
     # 9. export GLB + materiaux
     out_glb = os.path.join(GLB_DIR, key + ".glb")
@@ -599,6 +687,7 @@ def main():
         entry = {
             "label": label,
             "cote_m": int(side),
+            "arbres": len(arbres),
             "date": datetime.date.today().isoformat(),
             "lat": round(args.lat, 6),
             "lon": round(args.lon, 6),
@@ -615,7 +704,7 @@ def main():
         "cote_m": int(side),
         "dalles": [d["name"] for d in dalles],
         "points": n_points, "points_sol": n_ground,
-        "batiments": n_meshed, "mo": mo,
+        "batiments": n_meshed, "arbres": len(arbres), "mo": mo,
         "glb": os.path.relpath(out_glb, BASE).replace("\\", "/"),
         "url": RAW_URL % key,
     }
