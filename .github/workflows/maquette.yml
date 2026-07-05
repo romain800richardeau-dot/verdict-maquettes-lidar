@@ -61,20 +61,12 @@ jobs:
               LABEL=$(jq -r '.client_payload.label // empty' "$GITHUB_EVENT_PATH")
               ;;
             push)
-              REQUEST_FILE=$(jq -r '[(.head_commit.added // [])[], (.head_commit.modified // [])[]] | map(select(test("^requests/.+\\.json$"))) | last // empty' "$GITHUB_EVENT_PATH")
-              # --- DEBUG TEMPORAIRE (a retirer une fois le neutre elucide) ---
-              {
-                echo "event_name=$GITHUB_EVENT_NAME"
-                echo "request_file=[$REQUEST_FILE]"
-                jq -c '{hc_null: (.head_commit == null), added: (.head_commit.added // null), modified: (.head_commit.modified // null)}' "$GITHUB_EVENT_PATH" || echo "jq_payload_error"
-                ls requests/ || true
-              } > debug_params.txt
-              git config user.name maquette-bot
-              git config user.email maquette-bot@users.noreply.github.com
-              git add debug_params.txt
-              git commit -q -m "debug params [skip ci]" || true
-              git push origin HEAD:main || true
-              # --- FIN DEBUG ---
+              # GOTCHA verifie le 05/07/2026 : sur le runner, head_commit du payload push N'A PAS
+              # les champs added/modified (contrairement au webhook documente). On ne parse donc
+              # PAS le payload : on traite le plus ANCIEN requests/*.json present dans l'arbre.
+              # Le workflow supprime chaque requete traitee -> tout .json present est en attente,
+              # et une requete ratee sera rattrapee au declenchement suivant (auto-reparant).
+              REQUEST_FILE=$(ls requests/*.json 2>/dev/null | sort | head -n 1 || true)
               if [ -z "$REQUEST_FILE" ] || [ ! -f "$REQUEST_FILE" ]; then
                 echo "Push sans fichier requests/*.json exploitable, sortie neutre."
                 echo "ok=false" >> "$GITHUB_OUTPUT"
