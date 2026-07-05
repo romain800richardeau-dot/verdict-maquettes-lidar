@@ -25,6 +25,7 @@ Environnement : ROOFER_BIN (defaut <racine du depot>/roofer/bin/roofer).
 Codes de sortie : 0 = OK, 3 = aucun batiment dans la fenetre, 1 = erreur.
 """
 import argparse
+import gzip
 import datetime
 import glob
 import json
@@ -509,6 +510,99 @@ def trees_extract(crop_laz, window, Zdtm, dtm_grid_m):
         taken[j0:j1 + 1, i0:i1 + 1] |= ((jj - gj) ** 2 + (iq - gi) ** 2 <= rc * rc)
     return trees
 
+
+
+# ------------------------------------------ etape 8d : grille physique du bati
+def phys_rasterize(Vb, Fb, Zdtm, dtm_grid_m, window):
+    """Rasterise les triangles LoD2.2 en grille 1 m pour la PHYSIQUE du simulateur :
+    - H : hauteur du bati au-dessus du DTM (decimetres, uint16, 0 = pas de bati)
+    - S : pente du pan gagnant en degres (uint8, 255 = pas de bati)
+    - A : azimut du pan (sens de la descente, 0 = nord, est = 90) en demi-degres
+          (uint8 0-179, 255 = pas de bati ou pan quasi plat < 5 deg)
+    Le pan retenu par maille est celui qui donne le Z le plus HAUT (toit vu du ciel).
+    Reperes : fenetre = centre snappe +/- cote/2, maille [j, i] = (y depuis miny,
+    x depuis minx), row-major j * N + i, comme la canopee des arbres."""
+    minx, miny, maxx, maxy = window
+    N = int(round(maxx - minx))
+    H = np.zeros(N * N, dtype=np.float32)          # hauteur ABSOLUE gagnante (avant conversion relative)
+    H.fill(-np.inf)
+    SL = np.full(N * N, 255, dtype=np.uint8)
+    AZ = np.full(N * N, 255, dtype=np.uint8)
+    tri = Vb[Fb]                                    # (nT, 3, 3) coordonnees absolues
+    # normale de chaque triangle (orientee vers le haut)
+    e1 = tri[:, 1] - tri[:, 0]
+    e2 = tri[:, 2] - tri[:, 0]
+    nrm = np.cross(e1, e2)
+    flip = nrm[:, 2] < 0
+    nrm[flip] *= -1.0
+    ln = np.linalg.norm(nrm, axis=1)
+    ok = ln > 1e-9
+    for t in range(len(tri)):
+        if not ok[t]:
+            continue
+        v = tri[t]
+        i0 = max(0, int(np.floor(v[:, 0].min() - minx)))
+        i1 = min(N - 1, int(np.floor(v[:, 0].max() - minx)))
+        j0 = max(0, int(np.floor(v[:, 1].min() - miny)))
+        j1 = min(N - 1, int(np.floor(v[:, 1].max() - miny)))
+        if i1 < i0 or j1 < j0:
+            continue
+        xs = minx + np.arange(i0, i1 + 1) + 0.5
+        ys = miny + np.arange(j0, j1 + 1) + 0.5
+        gx, gy = np.meshgrid(xs, ys)
+        # coordonnees barycentriques (2D)
+        x1, y1 = v[0, 0], v[0, 1]
+        x2, y2 = v[1, 0], v[1, 1]
+        x3, y3 = v[2, 0], v[2, 1]
+        det = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3)
+        if abs(det) < 1e-9:
+            continue
+        l1 = ((y2 - y3) * (gx - x3) + (x3 - x2) * (gy - y3)) / det
+        l2 = ((y3 - y1) * (gx - x3) + (x1 - x3) * (gy - y3)) / det
+        l3 = 1.0 - l1 - l2
+        eps = -1e-6
+        inside = (l1 >= eps) & (l2 >= eps) & (l3 >= eps)
+        if not inside.any():
+            continue
+        z = l1 * v[0, 2] + l2 * v[1, 2] + l3 * v[2, 2]
+        jj, ii = np.nonzero(inside)
+        cells = (jj + j0) * N + (ii + i0)
+        zc = z[jj, ii].astype(np.float32)
+        upd = zc > H[cells]
+        if not upd.any():
+            continue
+        cu = cells[upd]
+        H[cu] = zc[upd]
+        nx, ny, nz = nrm[t] / ln[t]
+        slope = np.degrees(np.arccos(max(-1.0, min(1.0, nz))))
+        SL[cu] = np.uint8(min(254, round(slope)))
+        if slope >= 5.0:
+            az = (np.degrees(np.arctan2(nx, ny)) + 360.0) % 360.0   # 0 = nord, est = 90
+            AZ[cu] = np.uint8(min(179, int(az / 2.0)))
+        else:
+            AZ[cu] = 255
+    # hauteur RELATIVE au DTM (grille dtm_grid_m -> 1 m par plus proche voisin)
+    Nd = Zdtm.shape[0]
+    iii = np.clip(((np.arange(N) + 0.5) / dtm_grid_m).astype(np.int64), 0, Nd - 1)
+    dtm1 = Zdtm[np.ix_(iii, iii)].astype(np.float32).ravel()
+    rel = H - dtm1
+    bati = np.isfinite(H) & (rel >= 1.0)            # < 1 m au-dessus du sol = pas un bati
+    Hdm = np.zeros(N * N, dtype=np.uint16)
+    Hdm[bati] = np.clip(np.round(rel[bati] * 10.0), 1, 65535).astype(np.uint16)
+    SL[~bati] = 255
+    AZ[~bati] = 255
+    return N, Hdm, SL, AZ, int(bati.sum())
+
+
+def phys_write(path, N, side, Hdm, SL, AZ):
+    """Binaire little-endian gzippe : magic VPH1, uint32 N, int32 cote_m,
+    puis N*N uint16 hauteurs (dm), N*N uint8 pentes (deg), N*N uint8 azimuts (demi-deg)."""
+    import struct as _st
+    raw = b"VPH1" + _st.pack("<Ii", N, side) + Hdm.tobytes() + SL.tobytes() + AZ.tobytes()
+    with gzip.open(path, "wb", compresslevel=7) as f:
+        f.write(raw)
+    return os.path.getsize(path)
+
 # ---------------------------------------------- etape 9 : GLB + materiaux gris
 def export_glb(Vb, Fb, Vg, Fg, snx, sny, out_glb):
     import trimesh
@@ -675,6 +769,14 @@ def main():
                       f, separators=(",", ":"))
         log("  %d arbres -> %s" % (len(arbres), trees_path))
 
+    # 8d. grille physique (hauteurs + normales de toit) -> glb/<cle>.phys.gz
+    with Chrono("8d grille physique"):
+        Np, Hdm, SLg, AZg, n_bati_cells = phys_rasterize(Vb, Fb, Zg, max(1.0, side / 500.0), window)
+        phys_path = os.path.join(GLB_DIR, key + ".phys.gz")
+        phys_size = phys_write(phys_path, Np, int(side), Hdm, SLg, AZg)
+        log("  %d mailles baties / %d, %s : %.2f Mo"
+            % (n_bati_cells, Np * Np, phys_path, phys_size / 1048576.0))
+
     # 9. export GLB + materiaux
     out_glb = os.path.join(GLB_DIR, key + ".glb")
     with Chrono("9 export GLB"):
@@ -688,6 +790,7 @@ def main():
             "label": label,
             "cote_m": int(side),
             "arbres": len(arbres),
+            "phys": True,
             "date": datetime.date.today().isoformat(),
             "lat": round(args.lat, 6),
             "lon": round(args.lon, 6),
