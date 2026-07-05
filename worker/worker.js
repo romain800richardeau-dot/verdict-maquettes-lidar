@@ -85,7 +85,7 @@ export function normSide(raw) {
   var side = Number(raw);
   if (!isFinite(side) || side <= 0) side = 500;
   side = Math.round(side / 100) * 100;
-  return Math.min(2000, Math.max(400, side));
+  return Math.min(3200, Math.max(400, side));
 }
 export function siteKey(lat, lon, side) {
   var p = wgs84ToLambert93(lat, lon);

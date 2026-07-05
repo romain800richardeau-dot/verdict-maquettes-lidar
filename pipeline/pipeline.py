@@ -163,50 +163,59 @@ def crop_and_merge(local_paths, window, out_laz):
     minx, miny, maxx, maxy = window
     bounds = Bounds(mins=np.array([minx, miny, -1e4]),
                     maxs=np.array([maxx, maxy, 1e4]))
-    parts = []
-    ref_header = None
-    for path in local_paths:
-        ta = time.perf_counter()
-        with laspy.CopcReader.open(path) as cr:
-            pts = cr.query(bounds)
-            if ref_header is None:
-                ref_header = cr.header
-        log("  %s : %d points dans la fenetre (%.1f s)"
-            % (os.path.basename(path), len(pts), time.perf_counter() - ta))
-        if len(pts):
-            parts.append(pts)
-    if not parts:
-        fail("aucun point LiDAR dans la fenetre (dalles vides sur cette emprise)")
-
-    # Fusion : PIEGE laspy, pas d'assignation las.x sur PackedPointRecord ->
-    # on passe par les entiers X/Y/Z avec les scales/offsets de la 1re dalle.
-    h = laspy.LasHeader(version=ref_header.version,
-                        point_format=ref_header.point_format)
-    h.offsets = ref_header.offsets
-    h.scales = ref_header.scales
-    las = laspy.LasData(header=h)
-    total = sum(len(p) for p in parts)
-    rec = laspy.PackedPointRecord.zeros(total, h.point_format)
-    las.points = rec
-    xr = np.concatenate([np.asarray(p.x) for p in parts])
-    yr = np.concatenate([np.asarray(p.y) for p in parts])
-    zr = np.concatenate([np.asarray(p.z) for p in parts])
-    rec["X"] = np.round((xr - h.offsets[0]) / h.scales[0]).astype(np.int32)
-    rec["Y"] = np.round((yr - h.offsets[1]) / h.scales[1]).astype(np.int32)
-    rec["Z"] = np.round((zr - h.offsets[2]) / h.scales[2]).astype(np.int32)
+    # ECRITURE EN FLUX : une dalle a la fois en memoire (obligatoire pour les grandes
+    # fenetres : 3,2 km = jusqu'a 25 dalles, la fusion en RAM ferait deborder le runner).
+    # PIEGE laspy inchange : pas d'assignation .x sur PackedPointRecord, passer par les
+    # entiers X/Y/Z rescales vers les scales/offsets de la 1re dalle.
+    total = 0
+    n_ground = 0
+    n_bat = 0
+    writer = None
+    h = None
     skip = {"X", "Y", "Z"}
-    for dim in h.point_format.dimension_names:
-        if dim in skip:
-            continue
-        try:
-            rec[dim] = np.concatenate([np.asarray(p[dim]) for p in parts])
-        except Exception as e:
-            log("  dim %s non copiee : %s" % (dim, e))
-    las.write(out_laz)
-    cls = np.asarray(las.classification)
-    n_ground = int((cls == 2).sum())
-    log("  fusion : %d points (%d sol classe 2, %d bati classe 6) -> %s"
-        % (total, n_ground, int((cls == 6).sum()), out_laz))
+    warned = set()
+    try:
+        for path in local_paths:
+            ta = time.perf_counter()
+            with laspy.CopcReader.open(path) as cr:
+                pts = cr.query(bounds)
+                if h is None:
+                    h = laspy.LasHeader(version=cr.header.version,
+                                        point_format=cr.header.point_format)
+                    h.offsets = cr.header.offsets
+                    h.scales = cr.header.scales
+                    writer = laspy.open(out_laz, mode="w", header=h)
+            npts = len(pts)
+            log("  %s : %d points dans la fenetre (%.1f s)"
+                % (os.path.basename(path), npts, time.perf_counter() - ta))
+            if not npts:
+                continue
+            rec = laspy.PackedPointRecord.zeros(npts, h.point_format)
+            rec["X"] = np.round((np.asarray(pts.x) - h.offsets[0]) / h.scales[0]).astype(np.int32)
+            rec["Y"] = np.round((np.asarray(pts.y) - h.offsets[1]) / h.scales[1]).astype(np.int32)
+            rec["Z"] = np.round((np.asarray(pts.z) - h.offsets[2]) / h.scales[2]).astype(np.int32)
+            for dim in h.point_format.dimension_names:
+                if dim in skip:
+                    continue
+                try:
+                    rec[dim] = np.asarray(pts[dim])
+                except Exception as e:
+                    if dim not in warned:
+                        warned.add(dim)
+                        log("  dim %s non copiee : %s" % (dim, e))
+            writer.write_points(rec)
+            cls = np.asarray(pts.classification)
+            total += npts
+            n_ground += int((cls == 2).sum())
+            n_bat += int((cls == 6).sum())
+            del pts, rec
+    finally:
+        if writer is not None:
+            writer.close()
+    if not total:
+        fail("aucun point LiDAR dans la fenetre (dalles vides sur cette emprise)")
+    log("  fusion en flux : %d points (%d sol classe 2, %d bati classe 6) -> %s"
+        % (total, n_ground, n_bat, out_laz))
     return total, n_ground
 
 
@@ -382,20 +391,24 @@ def ground_mesh(crop_laz, window, grid_m):
     from scipy import ndimage
 
     minx, miny, maxx, maxy = window
-    las = laspy.read(crop_laz)
-    x = np.asarray(las.x)
-    y = np.asarray(las.y)
-    z = np.asarray(las.z)
-    cls = np.asarray(las.classification)
-    keep = cls == 2       # SOL NU seulement -> DTM propre
-    x, y, z = x[keep], y[keep], z[keep]
-    if z.size == 0:
-        fail("aucun point sol (classe 2) dans la fenetre, DTM impossible")
     N = int(round((maxx - minx) / grid_m))
-    ix = np.clip(((x - minx) / grid_m).astype(np.int64), 0, N - 1)
-    iy = np.clip(((y - miny) / grid_m).astype(np.int64), 0, N - 1)
     Zf = np.full(N * N, -np.inf)
-    np.maximum.at(Zf, iy * N + ix, z)
+    n_sol = 0
+    with laspy.open(crop_laz) as rd:   # lecture EN CHUNKS : le crop des grandes fenetres ne tient pas en RAM
+        for pts in rd.chunk_iterator(4_000_000):
+            cls = np.asarray(pts.classification)
+            keep = cls == 2       # SOL NU seulement -> DTM propre
+            if not keep.any():
+                continue
+            x = np.asarray(pts.x)[keep]
+            y = np.asarray(pts.y)[keep]
+            z = np.asarray(pts.z)[keep]
+            n_sol += int(keep.sum())
+            ix = np.clip(((x - minx) / grid_m).astype(np.int64), 0, N - 1)
+            iy = np.clip(((y - miny) / grid_m).astype(np.int64), 0, N - 1)
+            np.maximum.at(Zf, iy * N + ix, z)
+    if n_sol == 0:
+        fail("aucun point sol (classe 2) dans la fenetre, DTM impossible")
     Z = Zf.reshape(N, N)
     empty = ~np.isfinite(Z)
     if empty.any():       # rues etroites mal vues du ciel -> beaucoup de trous
@@ -496,14 +509,14 @@ def main():
     ap.add_argument("--lon", type=float, required=True)
     ap.add_argument("--label", type=str, default=None)
     ap.add_argument("--side", type=float, default=SIDE_DEFAUT,
-                    help="cote de la fenetre en m (400 a 2000, arrondi a 100 ; defaut 500)")
+                    help="cote de la fenetre en m (400 a 3200, arrondi a 100 ; defaut 500)")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     t_all = time.perf_counter()
 
     # 1. geometrie du site
-    side = min(2000.0, max(400.0, round(args.side / 100.0) * 100.0))
+    side = min(3200.0, max(400.0, round(args.side / 100.0) * 100.0))
     with Chrono("1 geometrie"):
         cx, cy, snx, sny, key, window = site_geometry(args.lat, args.lon, side)
         label = args.label or key
