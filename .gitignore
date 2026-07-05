@@ -1,0 +1,5 @@
+dalles_cache/
+work/
+__pycache__/
+*.laz
+roofer/

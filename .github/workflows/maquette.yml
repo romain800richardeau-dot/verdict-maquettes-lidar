@@ -1,0 +1,244 @@
+name: Maquette LiDAR
+
+on:
+  workflow_dispatch:
+    inputs:
+      lat:
+        description: Latitude WGS84 du site
+        required: true
+        type: string
+      lon:
+        description: Longitude WGS84 du site
+        required: true
+        type: string
+      label:
+        description: Libelle du site (optionnel)
+        required: false
+        default: ''
+        type: string
+  repository_dispatch:
+    types: [maquette]
+  push:
+    branches:
+      - main
+    paths:
+      - 'requests/**.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maquette-factory
+  cancel-in-progress: false
+
+jobs:
+  maquette:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Resolution des parametres
+        id: params
+        shell: bash
+        env:
+          IN_LAT: ${{ github.event.inputs.lat }}
+          IN_LON: ${{ github.event.inputs.lon }}
+          IN_LABEL: ${{ github.event.inputs.label }}
+        run: |
+          set -euo pipefail
+          LAT="" ; LON="" ; LABEL="" ; REQUEST_FILE=""
+          case "$GITHUB_EVENT_NAME" in
+            workflow_dispatch)
+              LAT="$IN_LAT" ; LON="$IN_LON" ; LABEL="$IN_LABEL"
+              ;;
+            repository_dispatch)
+              LAT=$(jq -r '.client_payload.lat // empty' "$GITHUB_EVENT_PATH")
+              LON=$(jq -r '.client_payload.lon // empty' "$GITHUB_EVENT_PATH")
+              LABEL=$(jq -r '.client_payload.label // empty' "$GITHUB_EVENT_PATH")
+              ;;
+            push)
+              REQUEST_FILE=$(jq -r '[(.head_commit.added // [])[], (.head_commit.modified // [])[]] | map(select(test("^requests/.+\\.json$"))) | last // empty' "$GITHUB_EVENT_PATH")
+              if [ -z "$REQUEST_FILE" ] || [ ! -f "$REQUEST_FILE" ]; then
+                echo "Push sans fichier requests/*.json exploitable, sortie neutre."
+                echo "ok=false" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              LAT=$(jq -r '.lat // empty' "$REQUEST_FILE" 2>/dev/null || true)
+              LON=$(jq -r '.lon // empty' "$REQUEST_FILE" 2>/dev/null || true)
+              LABEL=$(jq -r '.label // empty' "$REQUEST_FILE" 2>/dev/null || true)
+              ;;
+          esac
+          if [ -z "$LAT" ] || [ -z "$LON" ]; then
+            if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+              echo "Requete invalide (lat/lon absents dans $REQUEST_FILE), sortie neutre."
+              echo "ok=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Parametres lat/lon manquants." >&2
+            exit 1
+          fi
+          {
+            echo "ok=true"
+            echo "lat=$LAT"
+            echo "lon=$LON"
+            echo "label=$LABEL"
+            echo "request_file=$REQUEST_FILE"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Installer Python
+        if: steps.params.outputs.ok == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+
+      - name: Installer les dependances Python
+        if: steps.params.outputs.ok == 'true'
+        shell: bash
+        run: python -m pip install -r pipeline/requirements.txt
+
+      - name: Cache du binaire roofer
+        if: steps.params.outputs.ok == 'true'
+        id: roofer_cache
+        uses: actions/cache@v4
+        with:
+          path: roofer
+          key: roofer-linux-v1.0.0
+
+      - name: Installer roofer
+        if: steps.params.outputs.ok == 'true' && steps.roofer_cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 -o roofer.tar.gz \
+            https://github.com/3DBAG/roofer/releases/download/v1.0.0/roofer-linux-x86_64-v1.0.0.tar.gz
+          mkdir -p roofer_extract
+          tar xzf roofer.tar.gz -C roofer_extract
+          BIN=$(find roofer_extract -type f -name roofer -path '*/bin/*' | head -n 1)
+          if [ -z "$BIN" ]; then
+            echo "Binaire roofer introuvable dans l'archive :" >&2
+            find roofer_extract -maxdepth 3 -print >&2
+            exit 1
+          fi
+          ROOT=$(dirname "$(dirname "$BIN")")
+          mkdir -p roofer
+          cp -a "$ROOT"/. roofer/
+          chmod +x roofer/bin/roofer
+          rm -rf roofer_extract roofer.tar.gz
+
+      - name: Verifier roofer
+        if: steps.params.outputs.ok == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$GITHUB_WORKSPACE/roofer/bin/roofer" --version
+
+      - name: Generer la maquette
+        if: steps.params.outputs.ok == 'true'
+        id: pipeline
+        shell: bash
+        env:
+          ROOFER_BIN: ${{ github.workspace }}/roofer/bin/roofer
+          P_LAT: ${{ steps.params.outputs.lat }}
+          P_LON: ${{ steps.params.outputs.lon }}
+          P_LABEL: ${{ steps.params.outputs.label }}
+        run: |
+          set -euo pipefail
+          ARGS=(--lat "$P_LAT" --lon "$P_LON")
+          if [ -n "$P_LABEL" ]; then
+            ARGS+=(--label "$P_LABEL")
+          fi
+          set +e
+          python pipeline/pipeline.py "${ARGS[@]}" | tee pipeline_out.log
+          EC=${PIPESTATUS[0]}
+          set -e
+          if [ "$EC" = "3" ]; then
+            echo "Aucun batiment BDTOPO dans la fenetre : pas de maquette a produire (sortie neutre)."
+            echo "result=" >> "$GITHUB_OUTPUT"
+            echo "key=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$EC" != "0" ]; then
+            exit "$EC"
+          fi
+          RESULT=$(grep '^MAQUETTE_RESULT ' pipeline_out.log | tail -n 1 | sed 's/^MAQUETTE_RESULT //' || true)
+          KEY=""
+          if [ -n "$RESULT" ]; then
+            KEY=$(printf '%s' "$RESULT" | jq -r '.key // empty' || true)
+          fi
+          {
+            echo "result=$RESULT"
+            echo "key=$KEY"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Commit et push du resultat
+        if: steps.params.outputs.ok == 'true'
+        shell: bash
+        env:
+          REQUEST_FILE: ${{ steps.params.outputs.request_file }}
+          KEY: ${{ steps.pipeline.outputs.key }}
+          P_LABEL: ${{ steps.params.outputs.label }}
+        run: |
+          set -euo pipefail
+          git config user.name 'maquette-bot'
+          git config user.email 'maquette-bot@users.noreply.github.com'
+          git add glb/ index.json
+          if [ -n "$REQUEST_FILE" ] && [ -f "$REQUEST_FILE" ]; then
+            git rm -q "$REQUEST_FILE"
+          fi
+          if git diff --cached --quiet; then
+            echo "Rien a committer."
+            exit 0
+          fi
+          MSG="Maquette"
+          if [ -n "$KEY" ]; then MSG="$MSG $KEY"; fi
+          if [ -n "$P_LABEL" ]; then MSG="$MSG ($P_LABEL)"; fi
+          git commit -m "$MSG [skip ci]"   # [skip ci] : le commit du bot supprime requests/*.json, sans ce marqueur il redeclencherait le workflow pour rien
+          PUSHED=""
+          for i in 1 2 3; do
+            if git push origin main; then
+              PUSHED=1
+              break
+            fi
+            echo "Push refuse (tentative $i sur 3), git pull --rebase puis nouvel essai."
+            git pull --rebase origin main
+          done
+          if [ -z "$PUSHED" ]; then
+            echo "Push impossible apres 3 tentatives." >&2
+            exit 1
+          fi
+
+      - name: Resume
+        if: steps.params.outputs.ok == 'true'
+        shell: bash
+        env:
+          RESULT: ${{ steps.pipeline.outputs.result }}
+          KEY: ${{ steps.pipeline.outputs.key }}
+          P_LABEL: ${{ steps.params.outputs.label }}
+        run: |
+          {
+            echo "## Maquette LiDAR"
+            echo ""
+            if [ -n "$P_LABEL" ]; then
+              echo "Label : $P_LABEL"
+              echo ""
+            fi
+            if [ -n "$KEY" ]; then
+              echo "Cle : \`$KEY\`"
+              echo ""
+              echo "URL : https://raw.githubusercontent.com/romain800richardeau-dot/verdict-maquettes-lidar/main/glb/$KEY.glb"
+              echo ""
+            fi
+            if [ -n "$RESULT" ]; then
+              echo "Statistiques (MAQUETTE_RESULT) :"
+              echo ""
+              echo '```json'
+              printf '%s\n' "$RESULT"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
