@@ -44,12 +44,15 @@
     "mo": 9.82
   },
   "e842400_n6520700": {
+    "arbres": 955,
     "batiments": 811,
+    "cote_m": 500,
     "date": "2026-07-05",
-    "label": "8 rue du Griffon Lyon (validation)",
+    "label": "8 rue du Griffon Lyon (regen phys)",
     "lat": 45.7706,
     "lon": 4.833,
-    "mo": 10.93
+    "mo": 10.93,
+    "phys": true
   },
   "e844100_n6519600": {
     "batiments": 135,
