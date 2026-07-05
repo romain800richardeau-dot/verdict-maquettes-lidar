@@ -42,7 +42,7 @@ from pyproj import Transformer
 # ---------------------------------------------------------------- constantes
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # racine du depot
 WFS = "https://data.geopf.fr/wfs/ows"
-HALF = 250.0            # demi-cote de la fenetre (m)
+SIDE_DEFAUT = 500.0     # cote par defaut de la fenetre (m) ; --side pour changer (cle suffixee _w<cote>)
 SNAP = 100              # pas de la grille de snap du centre (m)
 GROUND_GRID = 1.0       # resolution du DTM sol (m)
 CHUNK = 8 * 1024 * 1024  # 8 Mo
@@ -88,13 +88,16 @@ class Chrono:
 
 
 # ------------------------------------------------------- etape 1 : geometrie
-def site_geometry(lat, lon):
+def site_geometry(lat, lon, side):
     tr = Transformer.from_crs("EPSG:4326", "EPSG:2154", always_xy=True)
     cx, cy = tr.transform(lon, lat)
     snx = int(round(cx / SNAP)) * SNAP
     sny = int(round(cy / SNAP)) * SNAP
     key = "e%d_n%d" % (snx, sny)
-    window = (snx - HALF, sny - HALF, snx + HALF, sny + HALF)
+    if side != SIDE_DEFAUT:
+        key += "_w%d" % int(side)      # les cles 500 m historiques restent SANS suffixe (retro-compatibilite)
+    half = side / 2.0
+    window = (snx - half, sny - half, snx + half, sny + half)
     return cx, cy, snx, sny, key, window
 
 
@@ -371,9 +374,10 @@ def buildings_mesh(outdir):
 
 
 # ------------------------------------------------------ etape 8b : maillage sol
-def ground_mesh(crop_laz, window):
-    """DTM classe 2, grille 1 m, trous combles par plus-proche-voisin,
-    median_filter 3 + uniform_filter 3 (recette build_full_maquette)."""
+def ground_mesh(crop_laz, window, grid_m):
+    """DTM classe 2, trous combles par plus-proche-voisin, median 3 + uniform 3
+    (recette build_full_maquette). grid_m = pas adapte au cote de la fenetre
+    (cote/500 m, plancher 1 m) pour garder ~250 000 mailles quel que soit le cote."""
     import laspy
     from scipy import ndimage
 
@@ -387,9 +391,9 @@ def ground_mesh(crop_laz, window):
     x, y, z = x[keep], y[keep], z[keep]
     if z.size == 0:
         fail("aucun point sol (classe 2) dans la fenetre, DTM impossible")
-    N = int(round((maxx - minx) / GROUND_GRID))
-    ix = np.clip(((x - minx) / GROUND_GRID).astype(np.int64), 0, N - 1)
-    iy = np.clip(((y - miny) / GROUND_GRID).astype(np.int64), 0, N - 1)
+    N = int(round((maxx - minx) / grid_m))
+    ix = np.clip(((x - minx) / grid_m).astype(np.int64), 0, N - 1)
+    iy = np.clip(((y - miny) / grid_m).astype(np.int64), 0, N - 1)
     Zf = np.full(N * N, -np.inf)
     np.maximum.at(Zf, iy * N + ix, z)
     Z = Zf.reshape(N, N)
@@ -400,8 +404,8 @@ def ground_mesh(crop_laz, window):
         Z = Z[tuple(idx)]  # comble par le voisin le plus proche -> sol continu
     Z = ndimage.median_filter(Z, size=3)   # enleve les pics isoles
     Z = ndimage.uniform_filter(Z, size=3)  # lissage
-    xs = minx + (np.arange(N) + 0.5) * GROUND_GRID
-    ys = miny + (np.arange(N) + 0.5) * GROUND_GRID
+    xs = minx + (np.arange(N) + 0.5) * grid_m
+    ys = miny + (np.arange(N) + 0.5) * grid_m
     gx, gy = np.meshgrid(xs, ys)
     V = np.column_stack([gx.ravel(), gy.ravel(), Z.ravel()]).astype(np.float64)
     idx = np.arange(N * N).reshape(N, N)
@@ -491,17 +495,20 @@ def main():
     ap.add_argument("--lat", type=float, required=True)
     ap.add_argument("--lon", type=float, required=True)
     ap.add_argument("--label", type=str, default=None)
+    ap.add_argument("--side", type=float, default=SIDE_DEFAUT,
+                    help="cote de la fenetre en m (400 a 2000, arrondi a 100 ; defaut 500)")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     t_all = time.perf_counter()
 
     # 1. geometrie du site
+    side = min(2000.0, max(400.0, round(args.side / 100.0) * 100.0))
     with Chrono("1 geometrie"):
-        cx, cy, snx, sny, key, window = site_geometry(args.lat, args.lon)
+        cx, cy, snx, sny, key, window = site_geometry(args.lat, args.lon, side)
         label = args.label or key
         log("  centre L93 brut : %.2f, %.2f" % (cx, cy))
-        log("  centre snappe 100 m : %d, %d -> cle %s" % (snx, sny, key))
+        log("  centre snappe 100 m : %d, %d -> cle %s (cote %d m)" % (snx, sny, key, int(side)))
         log("  fenetre : %.0f,%.0f -> %.0f,%.0f" % window)
 
     # 2. dalles intersectant la fenetre
@@ -518,6 +525,7 @@ def main():
             "lat": round(args.lat, 6), "lon": round(args.lon, 6),
             "centre_l93": [round(cx, 2), round(cy, 2)],
             "centre_snap": [snx, sny],
+            "cote_m": int(side),
             "fenetre": list(window),
             "dalles": dalles,
         }
@@ -563,7 +571,7 @@ def main():
         log("  %d features maillees, %d sommets, %d triangles"
             % (n_meshed, len(Vb), len(Fb)))
     with Chrono("8b maillage sol"):
-        Vg, Fg = ground_mesh(crop_laz, window)
+        Vg, Fg = ground_mesh(crop_laz, window, max(1.0, side / 500.0))
         log("  sol : %d sommets, %d triangles" % (len(Vg), len(Fg)))
 
     # 9. export GLB + materiaux
@@ -577,6 +585,7 @@ def main():
     with Chrono("10 index.json"):
         entry = {
             "label": label,
+            "cote_m": int(side),
             "date": datetime.date.today().isoformat(),
             "lat": round(args.lat, 6),
             "lon": round(args.lon, 6),
@@ -590,6 +599,7 @@ def main():
         "key": key, "label": label,
         "lat": round(args.lat, 6), "lon": round(args.lon, 6),
         "centre_snap": [snx, sny],
+        "cote_m": int(side),
         "dalles": [d["name"] for d in dalles],
         "points": n_points, "points_sol": n_ground,
         "batiments": n_meshed, "mo": mo,

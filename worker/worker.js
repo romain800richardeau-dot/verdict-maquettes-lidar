@@ -79,12 +79,21 @@ export function wgs84ToLambert93(lat, lon) {
   };
 }
 
-/* Cle de site : snap du centre L93 a la grille 100 m (meme formule que le pipeline). */
-export function siteKey(lat, lon) {
+/* Cle de site : snap du centre L93 a la grille 100 m (meme formule que le pipeline).
+   side != 500 -> suffixe _w<cote> (les cles 500 m historiques restent sans suffixe). */
+export function normSide(raw) {
+  var side = Number(raw);
+  if (!isFinite(side) || side <= 0) side = 500;
+  side = Math.round(side / 100) * 100;
+  return Math.min(2000, Math.max(400, side));
+}
+export function siteKey(lat, lon, side) {
   var p = wgs84ToLambert93(lat, lon);
   var xs = Math.round(p.x / 100) * 100;
   var ys = Math.round(p.y / 100) * 100;
-  return 'e' + xs + '_n' + ys;
+  var key = 'e' + xs + '_n' + ys;
+  var sd = normSide(side);
+  return sd === 500 ? key : key + '_w' + sd;
 }
 
 function jsonResponse(obj, status) {
@@ -123,7 +132,7 @@ async function handleGet(url) {
   var c = parseCoords(url.searchParams.get('lat'), url.searchParams.get('lon'));
   if (c.error) return jsonResponse({ status: 'error', message: c.error }, 400);
 
-  var key = siteKey(c.lat, c.lon);
+  var key = siteKey(c.lat, c.lon, url.searchParams.get('side'));
   var probe = await glbExists(key);
   if (probe.exists) {
     return jsonResponse({ status: 'ready', key: key, url: probe.url });
@@ -146,7 +155,8 @@ async function handlePost(request, url, env) {
     ? body.label.slice(0, 120)
     : '';
 
-  var key = siteKey(c.lat, c.lon);
+  var side = normSide(body && body.side);
+  var key = siteKey(c.lat, c.lon, side);
   var probe = await glbExists(key);
   if (probe.exists) {
     return jsonResponse({ status: 'ready', key: key, url: probe.url });
@@ -170,13 +180,13 @@ async function handlePost(request, url, env) {
     },
     body: JSON.stringify({
       event_type: 'maquette',
-      client_payload: { lat: c.lat, lon: c.lon, label: label },
+      client_payload: { lat: c.lat, lon: c.lon, label: label, side: side },
     }),
   });
 
   if (ghResp.status === 204) {
     var checkUrl = url.origin + '/maquette?lat=' + encodeURIComponent(c.lat) +
-      '&lon=' + encodeURIComponent(c.lon);
+      '&lon=' + encodeURIComponent(c.lon) + '&side=' + side;
     return jsonResponse({ status: 'building', key: key, checkUrl: checkUrl });
   }
 

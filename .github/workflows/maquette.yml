@@ -16,6 +16,11 @@ on:
         required: false
         default: ''
         type: string
+      side:
+        description: Cote de la fenetre en m (400-2000, defaut 500)
+        required: false
+        default: '500'
+        type: string
   repository_dispatch:
     types: [maquette]
   push:
@@ -48,17 +53,19 @@ jobs:
           IN_LAT: ${{ github.event.inputs.lat }}
           IN_LON: ${{ github.event.inputs.lon }}
           IN_LABEL: ${{ github.event.inputs.label }}
+          IN_SIDE: ${{ github.event.inputs.side }}
         run: |
           set -euo pipefail
-          LAT="" ; LON="" ; LABEL="" ; REQUEST_FILE=""
+          LAT="" ; LON="" ; LABEL="" ; SIDE="" ; REQUEST_FILE=""
           case "$GITHUB_EVENT_NAME" in
             workflow_dispatch)
-              LAT="$IN_LAT" ; LON="$IN_LON" ; LABEL="$IN_LABEL"
+              LAT="$IN_LAT" ; LON="$IN_LON" ; LABEL="$IN_LABEL" ; SIDE="$IN_SIDE"
               ;;
             repository_dispatch)
               LAT=$(jq -r '.client_payload.lat // empty' "$GITHUB_EVENT_PATH")
               LON=$(jq -r '.client_payload.lon // empty' "$GITHUB_EVENT_PATH")
               LABEL=$(jq -r '.client_payload.label // empty' "$GITHUB_EVENT_PATH")
+              SIDE=$(jq -r '.client_payload.side // empty' "$GITHUB_EVENT_PATH")
               ;;
             push)
               # GOTCHA verifie le 05/07/2026 : sur le runner, head_commit du payload push N'A PAS
@@ -75,6 +82,7 @@ jobs:
               LAT=$(jq -r '.lat // empty' "$REQUEST_FILE" 2>/dev/null || true)
               LON=$(jq -r '.lon // empty' "$REQUEST_FILE" 2>/dev/null || true)
               LABEL=$(jq -r '.label // empty' "$REQUEST_FILE" 2>/dev/null || true)
+              SIDE=$(jq -r '.side // empty' "$REQUEST_FILE" 2>/dev/null || true)
               ;;
           esac
           if [ -z "$LAT" ] || [ -z "$LON" ]; then
@@ -86,11 +94,13 @@ jobs:
             echo "Parametres lat/lon manquants." >&2
             exit 1
           fi
+          if [ -z "$SIDE" ]; then SIDE=500; fi
           {
             echo "ok=true"
             echo "lat=$LAT"
             echo "lon=$LON"
             echo "label=$LABEL"
+            echo "side=$SIDE"
             echo "request_file=$REQUEST_FILE"
           } >> "$GITHUB_OUTPUT"
 
@@ -152,9 +162,10 @@ jobs:
           P_LAT: ${{ steps.params.outputs.lat }}
           P_LON: ${{ steps.params.outputs.lon }}
           P_LABEL: ${{ steps.params.outputs.label }}
+          P_SIDE: ${{ steps.params.outputs.side }}
         run: |
           set -euo pipefail
-          ARGS=(--lat "$P_LAT" --lon "$P_LON")
+          ARGS=(--lat "$P_LAT" --lon "$P_LON" --side "${P_SIDE:-500}")
           if [ -n "$P_LABEL" ]; then
             ARGS+=(--label "$P_LABEL")
           fi
