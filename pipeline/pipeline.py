@@ -501,13 +501,28 @@ def trees_extract(crop_laz, window, Zdtm, dtm_grid_m):
         crown = max(1.5, min(9.0, r4 + 0.5))
         trees.append([round((gi + 0.5) - N / 2.0, 1), round((gj + 0.5) - N / 2.0, 1),
                       round(float(dtm1[gj, gi]), 1), round(hp, 1), round(crown, 1)])
-        if len(trees) >= 5000:
+        if len(trees) >= 6000:
             break
-        rc = max(2, int(round(crown)))
+        rc = max(2, min(4, int(round(crown * 0.6))))   # plafonne : une haie dense garde ses cimes au lieu d'etre ecremee
         j0, j1 = max(0, gj - rc), min(N - 1, gj + rc)
         i0, i1 = max(0, gi - rc), min(N - 1, gi + rc)
         jj, iq = np.ogrid[j0:j1 + 1, i0:i1 + 1]
         taken[j0:j1 + 1, i0:i1 + 1] |= ((jj - gj) ** 2 + (iq - gi) ** 2 <= rc * rc)
+    # REMPLISSAGE des masses continues (haies, boisements, ripisylves) : l'ecremage par cimes
+    # eclaircit la canopee dense vue du ciel -> toute maille encore libre avec chm >= 2,5 m
+    # recoit un arbre de bosquet tous les ~3 m (houppier compact), plafond global 9000.
+    for j in range(1, N - 1, 3):
+        if len(trees) >= 9000:
+            break
+        for i in range(1, N - 1, 3):
+            if taken[j, i] or chm[j, i] < MINH:
+                continue
+            hp = float(chm[j, i])
+            trees.append([round((i + 0.5) - N / 2.0, 1), round((j + 0.5) - N / 2.0, 1),
+                          round(float(dtm1[j, i]), 1), round(hp, 1),
+                          round(max(1.8, min(4.5, 0.38 * hp)), 1)])
+            if len(trees) >= 9000:
+                break
     return trees
 
 
