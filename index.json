@@ -118,6 +118,17 @@
     "mo": 11.03,
     "phys": true
   },
+  "e914100_n6927700_w3200": {
+    "arbres": 8897,
+    "batiments": 2605,
+    "cote_m": 3200,
+    "date": "2026-07-06",
+    "label": "Rue de l’Ancienne Scierie 57710 Aumetz",
+    "lat": 49.412369,
+    "lon": 5.949541,
+    "mo": 11.44,
+    "phys": true
+  },
   "e942200_n6538300": {
     "batiments": 818,
     "date": "2026-07-05",
