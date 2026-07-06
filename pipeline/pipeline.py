@@ -509,18 +509,26 @@ def trees_extract(crop_laz, window, Zdtm, dtm_grid_m):
         jj, iq = np.ogrid[j0:j1 + 1, i0:i1 + 1]
         taken[j0:j1 + 1, i0:i1 + 1] |= ((jj - gj) ** 2 + (iq - gi) ** 2 <= rc * rc)
     # REMPLISSAGE des masses continues (haies, boisements, ripisylves) : l'ecremage par cimes
-    # eclaircit la canopee dense vue du ciel -> toute maille encore libre avec chm >= 2,5 m
-    # recoit un arbre de bosquet tous les ~3 m (houppier compact), plafond global 9000.
+    # eclaircit la canopee dense vue du ciel. Candidats = mailles libres avec chm >= 2,5 m tous
+    # les ~3 m. Si les candidats DEBORDENT le budget (grandes fenetres forestieres), on en garde
+    # un sur k mais on GONFLE les houppiers de sqrt(k) : la COUVERTURE de canopee est preservee
+    # avec moins d'objets (plafond global 9000, leçon Haguenau 2,4 km plafonnee a 5000 clairsemes).
+    cand2 = []
     for j in range(1, N - 1, 3):
-        if len(trees) >= 9000:
-            break
         for i in range(1, N - 1, 3):
-            if taken[j, i] or chm[j, i] < MINH:
-                continue
+            if not taken[j, i] and chm[j, i] >= MINH:
+                cand2.append((j, i))
+    budget = max(0, 9000 - len(trees))
+    if cand2 and budget:
+        import math
+        kk = max(1, int(math.ceil(len(cand2) / float(budget))))
+        infl = math.sqrt(kk)
+        for idx2 in range(0, len(cand2), kk):
+            j, i = cand2[idx2]
             hp = float(chm[j, i])
             trees.append([round((i + 0.5) - N / 2.0, 1), round((j + 0.5) - N / 2.0, 1),
                           round(float(dtm1[j, i]), 1), round(hp, 1),
-                          round(max(1.8, min(4.5, 0.38 * hp)), 1)])
+                          round(min(9.0, max(2.2, min(4.5, 0.42 * hp)) * infl), 1)])
             if len(trees) >= 9000:
                 break
     return trees
