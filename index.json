@@ -36,6 +36,17 @@
     "lon": 7.772611,
     "mo": 9.39
   },
+  "e380100_n6570600_w800": {
+    "arbres": 5352,
+    "batiments": 2496,
+    "cote_m": 800,
+    "date": "2026-07-06",
+    "label": "2 Rue Villeneuve 17000 La Rochelle",
+    "lat": 46.159141,
+    "lon": -1.147555,
+    "mo": 14.18,
+    "phys": true
+  },
   "e648300_n6862200": {
     "batiments": 156,
     "date": "2026-07-05",
