@@ -66,6 +66,17 @@
     "lon": 2.294844,
     "mo": 9.82
   },
+  "e656300_n6862000_w800": {
+    "arbres": 8785,
+    "batiments": 1315,
+    "cote_m": 800,
+    "date": "2026-07-06",
+    "label": "60 Rue des Orteaux 75020 Paris",
+    "lat": 48.856257,
+    "lon": 2.404063,
+    "mo": 12.87,
+    "phys": true
+  },
   "e842400_n6520700": {
     "arbres": 3158,
     "batiments": 811,
