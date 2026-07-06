@@ -17,14 +17,15 @@
     "mo": 12.34
   },
   "e1050300_n6867800_w2400": {
-    "arbres": 5000,
+    "arbres": 8937,
     "batiments": 5000,
     "cote_m": 2400,
-    "date": "2026-07-05",
-    "label": "Haguenau",
+    "date": "2026-07-06",
+    "label": "Haguenau (regen canopee pleine)",
     "lat": 48.814549,
     "lon": 7.772611,
-    "mo": 15.26
+    "mo": 15.26,
+    "phys": true
   },
   "e1050300_n6867800_w800": {
     "batiments": 512,
