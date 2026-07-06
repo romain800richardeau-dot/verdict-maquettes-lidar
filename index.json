@@ -74,6 +74,17 @@
     "lon": 4.8539,
     "mo": 9.58
   },
+  "e844500_n6519400_w800": {
+    "arbres": 5679,
+    "batiments": 440,
+    "cote_m": 800,
+    "date": "2026-07-06",
+    "label": "51 Boulevard Marius Vivier-Merle 69003 Lyon",
+    "lat": 45.759019,
+    "lon": 4.858628,
+    "mo": 11.03,
+    "phys": true
+  },
   "e942200_n6538300": {
     "batiments": 818,
     "date": "2026-07-05",
