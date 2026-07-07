@@ -118,6 +118,17 @@
     "mo": 11.03,
     "phys": true
   },
+  "e893100_n6247300_w800": {
+    "arbres": 5604,
+    "batiments": 2840,
+    "cote_m": 800,
+    "date": "2026-07-07",
+    "label": "Rue tapis vert 13001 Marseille",
+    "lat": 43.298501,
+    "lon": 5.37868,
+    "mo": 14.32,
+    "phys": true
+  },
   "e914100_n6927700_w3200": {
     "arbres": 8897,
     "batiments": 2605,
