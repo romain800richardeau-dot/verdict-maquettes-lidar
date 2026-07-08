@@ -88,6 +88,17 @@
     "mo": 10.0,
     "phys": true
   },
+  "e712100_n6655600_w800": {
+    "arbres": 8831,
+    "batiments": 996,
+    "cote_m": 800,
+    "date": "2026-07-08",
+    "label": "1 Impasse Louis Stevenot 58000 Nevers",
+    "lat": 47.000667,
+    "lon": 3.159879,
+    "mo": 10.04,
+    "phys": true
+  },
   "e842400_n6520700": {
     "arbres": 3158,
     "batiments": 811,
