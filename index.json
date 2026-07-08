@@ -77,6 +77,17 @@
     "mo": 25.29,
     "phys": true
   },
+  "e651900_n6862800_w3200": {
+    "arbres": 8908,
+    "batiments": 5000,
+    "cote_m": 3200,
+    "date": "2026-07-08",
+    "label": "Rue du Jour 75001 Paris",
+    "lat": 48.863797,
+    "lon": 2.344731,
+    "mo": 35.08,
+    "phys": true
+  },
   "e651900_n6862800_w800": {
     "arbres": 2388,
     "batiments": 1546,
