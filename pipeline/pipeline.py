@@ -712,7 +712,7 @@ def main():
     t_all = time.perf_counter()
 
     # 1. geometrie du site
-    side = min(3200.0, max(400.0, round(args.side / 100.0) * 100.0))
+    side = min(6000.0, max(400.0, round(args.side / 100.0) * 100.0))
     with Chrono("1 geometrie"):
         cx, cy, snx, sny, key, window = site_geometry(args.lat, args.lon, side)
         label = args.label or key
