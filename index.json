@@ -224,5 +224,16 @@
     "lon": 6.419227,
     "mo": 9.05,
     "phys": true
+  },
+  "e982500_n6235000_w800": {
+    "arbres": 8904,
+    "batiments": 462,
+    "cote_m": 800,
+    "date": "2026-07-09",
+    "label": "Corniche d’Alsace 83820 Rayol-Canadel-sur-Mer",
+    "lat": 43.158598,
+    "lon": 6.471452,
+    "mo": 9.39,
+    "phys": true
   }
 }
