@@ -110,6 +110,17 @@
     "mo": 12.87,
     "phys": true
   },
+  "e683500_n6861800_w800": {
+    "arbres": 4768,
+    "batiments": 181,
+    "cote_m": 800,
+    "date": "2026-07-09",
+    "label": "Place d'Ariane 77700 Serris",
+    "lat": 48.855643,
+    "lon": 2.77481,
+    "mo": 9.93,
+    "phys": true
+  },
   "e712100_n6655100_w600": {
     "arbres": 5029,
     "batiments": 842,
