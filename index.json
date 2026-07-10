@@ -47,6 +47,17 @@
     "mo": 14.18,
     "phys": true
   },
+  "e413000_n6416800_w800": {
+    "arbres": 7985,
+    "batiments": 319,
+    "cote_m": 800,
+    "date": "2026-07-10",
+    "label": "Rue de l'Horloge 33600 Pessac",
+    "lat": 44.791134,
+    "lon": -0.629573,
+    "mo": 9.2,
+    "phys": true
+  },
   "e416500_n6523100_w800": {
     "arbres": 7839,
     "batiments": 1088,
