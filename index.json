@@ -58,6 +58,17 @@
     "mo": 10.19,
     "phys": true
   },
+  "e645800_n6846900_w600": {
+    "arbres": 5000,
+    "batiments": 175,
+    "cote_m": 600,
+    "date": "2026-07-10",
+    "label": "15 Avenue Emile Baudot 91300 Massy",
+    "lat": 48.719601,
+    "lon": 2.263079,
+    "mo": 9.3,
+    "phys": true
+  },
   "e648300_n6862200": {
     "batiments": 156,
     "date": "2026-07-05",
