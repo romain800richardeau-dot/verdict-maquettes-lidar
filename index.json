@@ -69,6 +69,17 @@
     "mo": 10.19,
     "phys": true
   },
+  "e452700_n6904600_w800": {
+    "arbres": 6728,
+    "batiments": 364,
+    "cote_m": 800,
+    "date": "2026-07-13",
+    "label": "Rue Molière 14000 Caen",
+    "lat": 49.193047,
+    "lon": -0.392929,
+    "mo": 9.11,
+    "phys": true
+  },
   "e645800_n6846900_w600": {
     "arbres": 5000,
     "batiments": 175,
