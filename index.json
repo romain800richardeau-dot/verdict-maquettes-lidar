@@ -176,6 +176,17 @@
     "mo": 12.87,
     "phys": true
   },
+  "e680300_n6402700_w3200": {
+    "arbres": 8984,
+    "batiments": 256,
+    "cote_m": 3200,
+    "date": "2026-07-15",
+    "label": "Huparlac",
+    "lat": 44.723419,
+    "lon": 2.751163,
+    "mo": 9.08,
+    "phys": true
+  },
   "e683500_n6861800_w800": {
     "arbres": 4768,
     "batiments": 181,
