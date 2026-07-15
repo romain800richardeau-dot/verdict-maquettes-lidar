@@ -272,6 +272,17 @@
     "mo": 11.03,
     "phys": true
   },
+  "e847600_n6519900_w800": {
+    "arbres": 6599,
+    "batiments": 1355,
+    "cote_m": 800,
+    "date": "2026-07-15",
+    "label": "104 Boulevard Eugène Réguillon 69100 Villeurbanne",
+    "lat": 45.762613,
+    "lon": 4.899571,
+    "mo": 11.37,
+    "phys": true
+  },
   "e893100_n6247300_w800": {
     "arbres": 5604,
     "batiments": 2840,
