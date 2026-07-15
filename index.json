@@ -80,6 +80,17 @@
     "mo": 9.11,
     "phys": true
   },
+  "e571800_n6278400_w800": {
+    "arbres": 5999,
+    "batiments": 770,
+    "cote_m": 800,
+    "date": "2026-07-15",
+    "label": "60 Rue du Pech 31100 Toulouse",
+    "lat": 43.592646,
+    "lon": 1.412459,
+    "mo": 10.35,
+    "phys": true
+  },
   "e645800_n6846900_w600": {
     "arbres": 5000,
     "batiments": 175,
