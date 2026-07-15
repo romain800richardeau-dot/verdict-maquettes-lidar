@@ -121,6 +121,17 @@
     "lon": 2.294844,
     "mo": 9.82
   },
+  "e649400_n6860400_w800": {
+    "arbres": 6083,
+    "batiments": 1374,
+    "cote_m": 800,
+    "date": "2026-07-15",
+    "label": "207 Rue de Vaugirard 75015 Paris",
+    "lat": 48.842048,
+    "lon": 2.310011,
+    "mo": 13.15,
+    "phys": true
+  },
   "e651900_n6862800_w1200": {
     "arbres": 5727,
     "batiments": 3125,
