@@ -334,5 +334,16 @@
     "lon": 6.471452,
     "mo": 9.39,
     "phys": true
+  },
+  "e994800_n6534300_w3200": {
+    "arbres": 7881,
+    "batiments": 6,
+    "cote_m": 3200,
+    "date": "2026-07-16",
+    "label": "Les Glaciers 74170 Saint-Gervais-les-Bains",
+    "lat": 45.844939,
+    "lon": 6.799573,
+    "mo": 8.57,
+    "phys": true
   }
 }
