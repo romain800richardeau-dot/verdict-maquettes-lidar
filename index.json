@@ -176,6 +176,17 @@
     "mo": 12.87,
     "phys": true
   },
+  "e658800_n6865000_w800": {
+    "arbres": 7061,
+    "batiments": 2225,
+    "cote_m": 800,
+    "date": "2026-07-19",
+    "label": "Romainville",
+    "lat": 48.884085,
+    "lon": 2.438056,
+    "mo": 12.64,
+    "phys": true
+  },
   "e680300_n6402700_w3200": {
     "arbres": 8984,
     "batiments": 256,
