@@ -91,6 +91,17 @@
     "mo": 10.35,
     "phys": true
   },
+  "e640000_n6971500_w800": {
+    "arbres": 5725,
+    "batiments": 198,
+    "cote_m": 800,
+    "date": "2026-07-21",
+    "label": "Creuse",
+    "lat": 49.839373,
+    "lon": 2.165977,
+    "mo": 8.85,
+    "phys": true
+  },
   "e645800_n6846900_w600": {
     "arbres": 5000,
     "batiments": 175,
