@@ -91,6 +91,17 @@
     "mo": 10.35,
     "phys": true
   },
+  "e596300_n6698900": {
+    "arbres": 6170,
+    "batiments": 23,
+    "cote_m": 500,
+    "date": "2026-07-22",
+    "label": "Nantes 41230 Lassay-sur-Croisne",
+    "lat": 47.382187,
+    "lon": 1.625835,
+    "mo": 8.6,
+    "phys": true
+  },
   "e614600_n6757000_w1200": {
     "arbres": 5698,
     "batiments": 692,
