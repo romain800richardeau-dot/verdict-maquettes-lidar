@@ -286,6 +286,17 @@
     "mo": 11.48,
     "phys": true
   },
+  "e840500_n6513200_w800": {
+    "arbres": 8865,
+    "batiments": 503,
+    "cote_m": 800,
+    "date": "2026-07-22",
+    "label": "Chemin du Grand Revoyet 69310 Oullins-Pierre-Bénite",
+    "lat": 45.703482,
+    "lon": 4.805235,
+    "mo": 9.77,
+    "phys": true
+  },
   "e842400_n6520700": {
     "arbres": 3158,
     "batiments": 811,
