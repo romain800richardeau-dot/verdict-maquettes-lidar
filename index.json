@@ -91,6 +91,17 @@
     "mo": 10.35,
     "phys": true
   },
+  "e614600_n6757000_w1200": {
+    "arbres": 5698,
+    "batiments": 692,
+    "cote_m": 1200,
+    "date": "2026-07-22",
+    "label": "10 Rue Henri Dunant 45140 Ingré",
+    "lat": 47.907913,
+    "lon": 1.856661,
+    "mo": 9.76,
+    "phys": true
+  },
   "e640000_n6971500_w800": {
     "arbres": 5725,
     "batiments": 198,
