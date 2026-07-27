@@ -393,6 +393,17 @@
     "mo": 14.32,
     "phys": true
   },
+  "e910200_n6685400_w800": {
+    "arbres": 7735,
+    "batiments": 294,
+    "cote_m": 800,
+    "date": "2026-07-27",
+    "label": "Rue du Charmot 25170 Lantenne-Vertière",
+    "lat": 47.23571,
+    "lon": 5.778338,
+    "mo": 9.03,
+    "phys": true
+  },
   "e914100_n6927700_w3200": {
     "arbres": 8897,
     "batiments": 2605,
