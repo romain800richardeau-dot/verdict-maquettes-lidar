@@ -113,6 +113,17 @@
     "mo": 9.76,
     "phys": true
   },
+  "e620700_n6749900_w800": {
+    "arbres": 8023,
+    "batiments": 104,
+    "cote_m": 800,
+    "date": "2026-07-27",
+    "label": "6 Rue du Carbone 45100 Orléans",
+    "lat": 47.844618,
+    "lon": 1.940127,
+    "mo": 8.88,
+    "phys": true
+  },
   "e626200_n6869400": {
     "arbres": 5443,
     "batiments": 105,
