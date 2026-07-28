@@ -80,6 +80,17 @@
     "mo": 9.11,
     "phys": true
   },
+  "e505000_n6286100_w800": {
+    "arbres": 6335,
+    "batiments": 2197,
+    "cote_m": 800,
+    "date": "2026-07-28",
+    "label": "Place de la Libération 32000 Auch",
+    "lat": 43.64675,
+    "lon": 0.583662,
+    "mo": 12.74,
+    "phys": true
+  },
   "e571800_n6278400_w800": {
     "arbres": 5999,
     "batiments": 770,
