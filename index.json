@@ -445,6 +445,17 @@
     "lon": 6.125296,
     "mo": 11.58
   },
+  "e957300_n6219400_w800": {
+    "arbres": 7438,
+    "batiments": 170,
+    "cote_m": 800,
+    "date": "2026-08-06",
+    "label": "Rue François Joseph Fournier 83400 Hyères",
+    "lat": 43.027875,
+    "lon": 6.155511,
+    "mo": 8.84,
+    "phys": true
+  },
   "e968700_n6454400_w3200": {
     "arbres": 8995,
     "batiments": 339,
