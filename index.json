@@ -426,6 +426,17 @@
     "mo": 14.32,
     "phys": true
   },
+  "e901600_n6252300_w800": {
+    "arbres": 8572,
+    "batiments": 791,
+    "cote_m": 800,
+    "date": "2026-08-18",
+    "label": "Allauch",
+    "lat": 43.341016,
+    "lon": 5.485377,
+    "mo": 9.69,
+    "phys": true
+  },
   "e910200_n6685400_w800": {
     "arbres": 7735,
     "batiments": 294,
