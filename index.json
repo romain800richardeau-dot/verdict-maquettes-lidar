@@ -481,6 +481,17 @@
     "mo": 9.03,
     "phys": true
   },
+  "e912500_n6684500_w800": {
+    "arbres": 5916,
+    "batiments": 186,
+    "cote_m": 800,
+    "date": "2026-08-19",
+    "label": "Grande Rue 25410 Corcelles-Ferrières",
+    "lat": 47.227139,
+    "lon": 5.809185,
+    "mo": 8.81,
+    "phys": true
+  },
   "e914100_n6927700_w3200": {
     "arbres": 8897,
     "batiments": 2605,
