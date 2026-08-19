@@ -363,6 +363,17 @@
     "mo": 10.93,
     "phys": true
   },
+  "e843400_n6519600_w800": {
+    "arbres": 6008,
+    "batiments": 879,
+    "cote_m": 800,
+    "date": "2026-08-19",
+    "label": "Cours Charlemagne 69002 Lyon",
+    "lat": 45.760996,
+    "lon": 4.84505,
+    "mo": 12.81,
+    "phys": true
+  },
   "e844100_n6518800_w600": {
     "arbres": 5111,
     "batiments": 484,
