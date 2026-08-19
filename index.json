@@ -58,6 +58,17 @@
     "mo": 14.18,
     "phys": true
   },
+  "e386800_n6788800_w800": {
+    "arbres": 7879,
+    "batiments": 1734,
+    "cote_m": 800,
+    "date": "2026-08-19",
+    "label": "Rue Notre-Dame 35500 Vitré",
+    "lat": 48.124722,
+    "lon": -1.211735,
+    "mo": 13.12,
+    "phys": true
+  },
   "e413000_n6416800_w800": {
     "arbres": 7985,
     "batiments": 319,
