@@ -275,6 +275,17 @@
     "mo": 16.27,
     "phys": true
   },
+  "e654000_n6863100_w800": {
+    "arbres": 5074,
+    "batiments": 1202,
+    "cote_m": 800,
+    "date": "2026-08-24",
+    "label": "50 Rue Jean-Pierre Timbaud 75011 Paris",
+    "lat": 48.866412,
+    "lon": 2.372768,
+    "mo": 14.49,
+    "phys": true
+  },
   "e656300_n6862000_w800": {
     "arbres": 8785,
     "batiments": 1315,
