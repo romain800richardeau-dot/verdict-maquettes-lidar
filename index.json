@@ -102,6 +102,17 @@
     "mo": 9.11,
     "phys": true
   },
+  "e484900_n6370400_w800": {
+    "arbres": 7820,
+    "batiments": 435,
+    "cote_m": 800,
+    "date": "2026-08-24",
+    "label": "Zone d’Activités John 47400 Tonneins",
+    "lat": 44.399402,
+    "lon": 0.298337,
+    "mo": 9.22,
+    "phys": true
+  },
   "e486900_n6368400_w800": {
     "arbres": 8248,
     "batiments": 296,
