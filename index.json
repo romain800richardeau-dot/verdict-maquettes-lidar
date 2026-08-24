@@ -102,6 +102,17 @@
     "mo": 9.11,
     "phys": true
   },
+  "e486900_n6368400_w800": {
+    "arbres": 8248,
+    "batiments": 296,
+    "cote_m": 800,
+    "date": "2026-08-24",
+    "label": "Tonneins",
+    "lat": 44.38244,
+    "lon": 0.324108,
+    "mo": 8.96,
+    "phys": true
+  },
   "e505000_n6286100_w800": {
     "arbres": 6335,
     "batiments": 2197,
