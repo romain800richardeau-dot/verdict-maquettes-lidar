@@ -80,6 +80,17 @@
     "mo": 13.12,
     "phys": true
   },
+  "e410700_n6417900_w600": {
+    "arbres": 6915,
+    "batiments": 464,
+    "cote_m": 600,
+    "date": "2026-08-28",
+    "label": "237 Avenue Pasteur 33600 Pessac",
+    "lat": 44.800122,
+    "lon": -0.659568,
+    "mo": 9.35,
+    "phys": true
+  },
   "e413000_n6416800_w800": {
     "arbres": 7985,
     "batiments": 319,
