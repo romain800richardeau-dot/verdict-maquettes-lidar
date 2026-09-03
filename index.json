@@ -525,6 +525,17 @@
     "mo": 14.32,
     "phys": true
   },
+  "e895500_n6245300_w800": {
+    "arbres": 5968,
+    "batiments": 1916,
+    "cote_m": 800,
+    "date": "2026-09-03",
+    "label": "Boulevard saint jean 13010 Marseille",
+    "lat": 43.279813,
+    "lon": 5.407332,
+    "mo": 11.55,
+    "phys": true
+  },
   "e901600_n6252300_w800": {
     "arbres": 8572,
     "batiments": 791,
