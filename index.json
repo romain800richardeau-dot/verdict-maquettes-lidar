@@ -286,6 +286,17 @@
     "mo": 10.15,
     "phys": true
   },
+  "e651400_n6859900_w800": {
+    "arbres": 7033,
+    "batiments": 696,
+    "cote_m": 800,
+    "date": "2026-09-04",
+    "label": "24 Rue du Faubourg Saint-Jacques 75014 Paris",
+    "lat": 48.837494,
+    "lon": 2.338534,
+    "mo": 11.72,
+    "phys": true
+  },
   "e651500_n6859900_w800": {
     "arbres": 7380,
     "batiments": 696,
