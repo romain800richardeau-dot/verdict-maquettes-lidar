@@ -157,6 +157,36 @@
     "mo": 8.58,
     "phys": true
   },
+  "e440400_n6516100_w1200": {
+    "arbres": 8794,
+    "batiments": 2815,
+    "cote_m": 1200,
+    "dalles": 6,
+    "date": "2026-09-11",
+    "label": "Cognac",
+    "lat": 45.694905,
+    "lon": -0.337146,
+    "mo": 12.88,
+    "phys": true,
+    "plages": 0,
+    "points": 22364465,
+    "telechargees": 6,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 9.1,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 15.0,
+      "6 emprises BDTOPO": 1.7,
+      "7 roofer": 89.2,
+      "8a maillage batiments": 5.4,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.4,
+      "8d grille physique": 8.2,
+      "9 export GLB": 0.2
+    },
+    "total_s": 130.6
+  },
   "e440400_n6516100_w800": {
     "arbres": 7778,
     "batiments": 991,
