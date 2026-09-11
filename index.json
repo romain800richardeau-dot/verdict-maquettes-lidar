@@ -517,6 +517,33 @@
     "mo": 12.71,
     "phys": true
   },
+  "e842200_n6521100_w800": {
+    "arbres": 6537,
+    "batiments": 1905,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-11",
+    "label": "Controle acceleration",
+    "lat": 45.774681,
+    "lon": 4.830048,
+    "mo": 12.9,
+    "phys": true,
+    "points": 23037838,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 44.1,
+      "5 crop + fusion": 10.2,
+      "6 emprises BDTOPO": 2.1,
+      "7 roofer": 73.3,
+      "8a maillage batiments": 5.2,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 8.0,
+      "9 export GLB": 0.2
+    },
+    "total_s": 144.9
+  },
   "e842400_n6520700": {
     "arbres": 3158,
     "batiments": 811,
