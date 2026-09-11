@@ -135,6 +135,17 @@
     "mo": 8.59,
     "phys": true
   },
+  "e431300_n6491500_w600": {
+    "arbres": 7235,
+    "batiments": 17,
+    "cote_m": 600,
+    "date": "2026-09-11",
+    "label": "Controle checkout partiel",
+    "lat": 45.47,
+    "lon": -0.44,
+    "mo": 8.58,
+    "phys": true
+  },
   "e452700_n6904600_w800": {
     "arbres": 6728,
     "batiments": 364,
