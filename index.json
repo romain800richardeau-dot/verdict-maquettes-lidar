@@ -495,6 +495,17 @@
     "mo": 9.77,
     "phys": true
   },
+  "e842100_n6521100_w800": {
+    "arbres": 6675,
+    "batiments": 1803,
+    "cote_m": 800,
+    "date": "2026-09-11",
+    "label": "2 Rue Villeneuve 69004 Lyon",
+    "lat": 45.77461,
+    "lon": 4.828755,
+    "mo": 12.71,
+    "phys": true
+  },
   "e842400_n6520700": {
     "arbres": 3158,
     "batiments": 811,
