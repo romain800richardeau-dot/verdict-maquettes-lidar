@@ -167,8 +167,52 @@ def download_dalle(url, dest):
     fail("telechargement impossible pour %s : %s" % (url, last_err))
 
 
-# -------------------------------------------------------- etape 5 : crop LAZ
-def crop_and_merge(local_paths, window, out_laz, dtm_grid_m):
+# ------------------------------------------- etape 5 : acquisition + crop LAZ
+#  Reglages de l essai par plages. Modifiables par variables d environnement
+#  pour pouvoir mesurer sans repousser le pipeline.
+#  L ESSAI S ETEINT EN UNE LIGNE. Un refus de l IGN n est pas gratuit :
+#  MESURE du 11/09/2026, le 429 a mis 16,4 s a tomber. Si le serveur se fait
+#  refuser lui aussi, chaque fabrication paierait cette avance perdue ; il suffit
+#  alors de poser COPC_ESSAI=0 dans le workflow pour aller droit au
+#  telechargement, sans rien retirer d autre.
+PLAGES_ESSAI = os.environ.get("COPC_ESSAI", "1") != "0"
+PLAGES_BUDGET = float(os.environ.get("COPC_BUDGET", "30"))   # s projetees, au-dela on se replie
+PLAGES_FILS = int(os.environ.get("COPC_FILS", "8"))          # requetes simultanees par dalle
+PLAGES_DELAI = float(os.environ.get("COPC_DELAI", "30"))     # s, delai maximal d une requete
+
+#  UN DELAI SUR CHAQUE REQUETE HTTP.
+#
+#  La lecture COPC a distance ouvre ses propres connexions, sans delai maximal :
+#  une connexion qui reste ouverte sans repondre bloquerait la fabrication
+#  jusqu au delai du workflow, cinq heures. On en pose un par defaut, sans
+#  toucher aux appels qui en declarent deja un (le telechargement des dalles et
+#  les requetes WFS gardent les leurs).
+_requete_nue = requests.Session.request
+
+
+def _requete_avec_delai(self, method, url, **kw):
+    kw.setdefault("timeout", PLAGES_DELAI)
+    return _requete_nue(self, method, url, **kw)
+
+
+requests.Session.request = _requete_avec_delai
+
+
+def lit_fenetre(source, bounds, fils=None):
+    """Les points de la fenetre, depuis un fichier LOCAL ou depuis une URL.
+
+       Rend aussi de quoi fabriquer l en-tete du nuage fusionne : version,
+       format de point, decalages et pas de quantification de la premiere dalle
+       lue, auxquels toutes les suivantes seront ramenees."""
+    from laspy.copc import CopcReader
+    kw = {"http_num_threads": fils} if fils else {}
+    with CopcReader.open(source, **kw) as cr:
+        info = (cr.header.version, cr.header.point_format,
+                cr.header.offsets, cr.header.scales)
+        return info, cr.query(bounds)
+
+
+def crop_and_merge(dalles, window, out_laz, dtm_grid_m):
     import laspy
     from laspy.copc import Bounds
 
@@ -200,20 +244,65 @@ def crop_and_merge(local_paths, window, out_laz, dtm_grid_m):
     Nv = int(round(maxx - minx))                 # canopee : maille fixe de 1 m
     Zsol = np.full(Nd * Nd, -np.inf)
     Zveg = np.full(Nv * Nv, -np.inf, dtype=np.float32)
+    from concurrent.futures import ThreadPoolExecutor
+    local_paths = [os.path.join(DALLES_CACHE, d["name"] if d["name"].endswith(".laz")
+                                else d["url"].split("/")[-1]) for d in dalles]
+    voie = "plages" if PLAGES_ESSAI else "telechargement"
+    replie = False         # le telechargement de repli n a lieu qu une fois
+    t_plages = 0.0
+    t_dl = 0.0
+    n_pl = 0
+    n_dl = 0
     try:
-        for path in local_paths:
+        for i, d in enumerate(dalles):
             ta = time.perf_counter()
-            with laspy.CopcReader.open(path) as cr:
-                pts = cr.query(bounds)
-                if h is None:
-                    h = laspy.LasHeader(version=cr.header.version,
-                                        point_format=cr.header.point_format)
-                    h.offsets = cr.header.offsets
-                    h.scales = cr.header.scales
-                    writer = laspy.open(out_laz, mode="w", header=h)
+            nom = os.path.basename(local_paths[i])
+            info = None
+            pts = None
+            par = None
+            if voie == "plages":
+                t0 = time.perf_counter()
+                try:
+                    info, pts = lit_fenetre(d["url"], bounds, PLAGES_FILS)
+                    t_plages += time.perf_counter() - t0
+                    n_pl += 1
+                    par = "plages"
+                    #  L ALLURE DECIDE DE LA SUITE : si ce rythme mene au-dela du
+                    #  budget pour l ensemble des dalles, le telechargement
+                    #  entier sera plus rapide, et on bascule sans attendre.
+                    projete = t_plages / n_pl * len(dalles)
+                    if projete > PLAGES_BUDGET and i + 1 < len(dalles):
+                        log("  plages : %.1f s pour %d dalle(s), soit %.0f s projetees "
+                            "pour %d : au-dela du budget de %.0f s, repli sur le "
+                            "telechargement" % (t_plages, n_pl, projete, len(dalles),
+                                                PLAGES_BUDGET))
+                        voie = "telechargement"
+                except Exception as e:
+                    t_plages += time.perf_counter() - t0
+                    log("  %s : lecture par plages refusee (%s), repli sur le "
+                        "telechargement" % (nom, str(e)[:70]))
+                    voie = "telechargement"
+            if pts is None:
+                #  REPLI : on rapatrie d un coup toutes les dalles qui restent,
+                #  de front, puis on les lit depuis le disque.
+                if not replie:
+                    replie = True
+                    t0 = time.perf_counter()
+                    reste = list(zip(dalles[i:], local_paths[i:]))
+                    with ThreadPoolExecutor(max_workers=min(4, len(reste))) as ex:
+                        list(ex.map(lambda a: download_dalle(a[0]["url"], a[1]), reste))
+                    t_dl += time.perf_counter() - t0
+                    n_dl += len(reste)
+                info, pts = lit_fenetre(local_paths[i], bounds)
+                par = "telechargee"
+            if h is None:
+                h = laspy.LasHeader(version=info[0], point_format=info[1])
+                h.offsets = info[2]
+                h.scales = info[3]
+                writer = laspy.open(out_laz, mode="w", header=h)
             npts = len(pts)
-            log("  %s : %d points dans la fenetre (%.1f s)"
-                % (os.path.basename(path), npts, time.perf_counter() - ta))
+            log("  %s : %d points dans la fenetre (%.1f s, %s)"
+                % (nom, npts, time.perf_counter() - ta, par))
             if not npts:
                 continue
             rec = laspy.PackedPointRecord.zeros(npts, h.point_format)
@@ -265,7 +354,10 @@ def crop_and_merge(local_paths, window, out_laz, dtm_grid_m):
         fail("aucun point LiDAR dans la fenetre (dalles vides sur cette emprise)")
     log("  fusion en flux : %d points lus (%d sol classe 2, %d bati classe 6), "
         "seuls sol et bati ecrits -> %s" % (total, n_ground, n_bat, out_laz))
-    return total, n_ground, Zsol.reshape(Nd, Nd), Zveg.reshape(Nv, Nv)
+    log("  acquisition : %d dalle(s) par plages en %.1f s, %d telechargee(s) en %.1f s"
+        % (n_pl, t_plages, n_dl, t_dl))
+    return (total, n_ground, Zsol.reshape(Nd, Nd), Zveg.reshape(Nv, Nv),
+            t_dl, t_plages, n_dl, n_pl)
 
 
 # ------------------------------------------------- etape 6 : emprises BDTOPO
@@ -765,31 +857,19 @@ def main():
         os.makedirs(d, exist_ok=True)
 
     # 4. telechargement complet des dalles
-    #  DE FRONT, PAS EN FILE.
-    #
-    #  Chaque dalle coute d abord une attente (l IGN prepare le fichier) puis un
-    #  transfert rapide. En file, les attentes s additionnent. MESURE du
-    #  11/09/2026 sur Lyon (4 dalles, 597 Mo) : 69,8 s en file, 18,9 s de front,
-    #  a 31,7 Mo/s cumules et 1,4 s d attente par dalle.
-    #
-    #  On garde le telechargement ENTIER. La lecture par plages du COPC, plus
-    #  economique en octets (157 Mo au lieu de 597), a ete essayee et ECARTEE :
-    #  l IGN refuse les requetes multiples (429 Too Many Requests) et la meme
-    #  fenetre a demande 291 s au lieu de 91. Ce serveur prefere peu de gros
-    #  transferts, et la mesure tranche contre l intuition.
-    from concurrent.futures import ThreadPoolExecutor
-    local_paths = [os.path.join(DALLES_CACHE, d["name"] if d["name"].endswith(".laz")
-                                else d["url"].split("/")[-1]) for d in dalles]
-    with Chrono("4 telechargement dalles"):
-        with ThreadPoolExecutor(max_workers=min(4, len(dalles))) as ex:
-            list(ex.map(lambda a: download_dalle(a[0]["url"], a[1]),
-                        list(zip(dalles, local_paths))))
-
-    # 5. crop local + fusion
+    #  4 ET 5 NE FONT PLUS QU UN. L acquisition ne peut plus se decider en
+    #  amont : chaque dalle est d abord tentee par plages, et telechargee en
+    #  entier seulement si l IGN refuse ou traine. Les deux durees sont
+    #  chronometrees separement et republiees plus bas sous leurs anciens noms,
+    #  pour rester comparables aux passages precedents.
     crop_laz = os.path.join(WORK, "crop.laz")
     grid_m = max(1.0, side / 500.0)
     with Chrono("5 crop + fusion"):
-        n_points, n_ground, Zsol, Zveg = crop_and_merge(local_paths, window, crop_laz, grid_m)
+        (n_points, n_ground, Zsol, Zveg,
+         t_dl, t_plages, n_dl, n_pl) = crop_and_merge(dalles, window, crop_laz, grid_m)
+    TEMPS["4 telechargement dalles"] = round(t_dl, 1)
+    TEMPS["4b lecture par plages"] = round(t_plages, 1)
+    TEMPS["5 crop + fusion"] = round(TEMPS["5 crop + fusion"] - t_dl - t_plages, 1)
 
     # 6. emprises BDTOPO
     footprints = os.path.join(WORK, "footprints.geojson")
@@ -856,6 +936,11 @@ def main():
             #  nombre de dalles et les points lus : de quoi mesurer le serveur
             #  depuis n importe ou, et donner de vrais poids a la barre
             #  d avancement du client.
+            #  QUELLE VOIE A SERVI : combien de dalles lues par plages,
+            #  combien telechargees en entier. Sans cela, les chronometres ne
+            #  diraient pas pourquoi l acquisition a coute ce qu elle a coute.
+            "plages": n_pl,
+            "telechargees": n_dl,
             "temps": dict(TEMPS),
             "total_s": round(time.perf_counter() - t_all, 1),
             "dalles": len(dalles),
