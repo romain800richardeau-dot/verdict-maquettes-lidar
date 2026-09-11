@@ -68,6 +68,9 @@ def fail(msg, code=1):
     sys.exit(code)
 
 
+TEMPS = {}          # duree de chaque etape, publiee dans index.json
+
+
 class Chrono:
     """Chronometre + log d'etape sur stderr."""
 
@@ -81,6 +84,7 @@ class Chrono:
 
     def __exit__(self, exc_type, exc, tb):
         dt = time.perf_counter() - self.t0
+        TEMPS[self.label] = round(dt, 1)   # retenu pour index.json
         if exc_type is None:
             log("[%s] fin en %.1f s" % (self.label, dt))
         else:
@@ -164,7 +168,7 @@ def download_dalle(url, dest):
 
 
 # -------------------------------------------------------- etape 5 : crop LAZ
-def crop_and_merge(local_paths, window, out_laz):
+def crop_and_merge(local_paths, window, out_laz, dtm_grid_m):
     import laspy
     from laspy.copc import Bounds
 
@@ -182,6 +186,20 @@ def crop_and_merge(local_paths, window, out_laz):
     h = None
     skip = {"X", "Y", "Z"}
     warned = set()
+    #  LES DEUX GRILLES SE REMPLISSENT ICI, PENDANT QU ON TIENT LES POINTS.
+    #
+    #  Avant, le nuage decoupe etait ecrit sur le disque, puis RELU en entier
+    #  deux fois : une fois pour le sol (classe 2), une fois pour la canopee
+    #  (classes 3 a 5). Soit trois passages de compression ou de decompression
+    #  sur 21 millions de points. Les points sont deja en main : on les range au
+    #  passage.
+    #
+    #  Et comme la vegetation ne sert plus qu ici, elle n a plus besoin d aller
+    #  dans le fichier remis a roofer, qui ne lit que le sol et le bati.
+    Nd = int(round((maxx - minx) / dtm_grid_m))
+    Nv = int(round(maxx - minx))                 # canopee : maille fixe de 1 m
+    Zsol = np.full(Nd * Nd, -np.inf)
+    Zveg = np.full(Nv * Nv, -np.inf, dtype=np.float32)
     try:
         for path in local_paths:
             ta = time.perf_counter()
@@ -211,10 +229,33 @@ def crop_and_merge(local_paths, window, out_laz):
                     if dim not in warned:
                         warned.add(dim)
                         log("  dim %s non copiee : %s" % (dim, e))
-            writer.write_points(rec)
             cls = np.asarray(pts.classification)
+            #  LES MEMES COORDONNEES QUE CELLES QUI SERAIENT RELUES DU FICHIER :
+            #  on repasse par les entiers, sinon les grilles se rempliraient avec
+            #  des valeurs au centimetre pres differentes de celles d hier, et la
+            #  comparaison avec l ancienne recette ne voudrait plus rien dire.
+            xq = rec["X"] * h.scales[0] + h.offsets[0]
+            yq = rec["Y"] * h.scales[1] + h.offsets[1]
+            zq = rec["Z"] * h.scales[2] + h.offsets[2]
+            sol = cls == 2
+            if sol.any():
+                ix = np.clip(((xq[sol] - minx) / dtm_grid_m).astype(np.int64), 0, Nd - 1)
+                iy = np.clip(((yq[sol] - miny) / dtm_grid_m).astype(np.int64), 0, Nd - 1)
+                np.maximum.at(Zsol, iy * Nd + ix, zq[sol])
+            veg = (cls >= 3) & (cls <= 5)
+            if veg.any():
+                ix = np.clip((xq[veg] - minx).astype(np.int64), 0, Nv - 1)
+                iy = np.clip((yq[veg] - miny).astype(np.int64), 0, Nv - 1)
+                np.maximum.at(Zveg, iy * Nv + ix, zq[veg].astype(np.float32))
+            #  ROOFER NE LIT QUE LE SOL ET LE BATI (--grnd-class 2, --bld-class 6).
+            #  MESURE : 83,8 s au lieu de 93,5, pour une geometrie inchangee
+            #  (223 388 sommets contre 223 340, l ecart tenant a son propre
+            #  echantillonnage).
+            garde = sol | (cls == 6)
+            if garde.any():
+                writer.write_points(rec[garde])
             total += npts
-            n_ground += int((cls == 2).sum())
+            n_ground += int(sol.sum())
             n_bat += int((cls == 6).sum())
             del pts, rec
     finally:
@@ -222,9 +263,9 @@ def crop_and_merge(local_paths, window, out_laz):
             writer.close()
     if not total:
         fail("aucun point LiDAR dans la fenetre (dalles vides sur cette emprise)")
-    log("  fusion en flux : %d points (%d sol classe 2, %d bati classe 6) -> %s"
-        % (total, n_ground, n_bat, out_laz))
-    return total, n_ground
+    log("  fusion en flux : %d points lus (%d sol classe 2, %d bati classe 6), "
+        "seuls sol et bati ecrits -> %s" % (total, n_ground, n_bat, out_laz))
+    return total, n_ground, Zsol.reshape(Nd, Nd), Zveg.reshape(Nv, Nv)
 
 
 # ------------------------------------------------- etape 6 : emprises BDTOPO
@@ -391,33 +432,20 @@ def buildings_mesh(outdir):
 
 
 # ------------------------------------------------------ etape 8b : maillage sol
-def ground_mesh(crop_laz, window, grid_m):
+def ground_mesh(Zgrille, window, grid_m):
     """DTM classe 2, trous combles par plus-proche-voisin, median 3 + uniform 3
     (recette build_full_maquette). grid_m = pas adapte au cote de la fenetre
-    (cote/500 m, plancher 1 m) pour garder ~250 000 mailles quel que soit le cote."""
-    import laspy
+    (cote/500 m, plancher 1 m) pour garder ~250 000 mailles quel que soit le cote.
+
+    LA GRILLE ARRIVE DEJA REMPLIE : elle a ete accumulee pendant le decoupage,
+    quand les points etaient en main. Cette fonction ne relit plus le nuage."""
     from scipy import ndimage
 
     minx, miny, maxx, maxy = window
-    N = int(round((maxx - minx) / grid_m))
-    Zf = np.full(N * N, -np.inf)
-    n_sol = 0
-    with laspy.open(crop_laz) as rd:   # lecture EN CHUNKS : le crop des grandes fenetres ne tient pas en RAM
-        for pts in rd.chunk_iterator(4_000_000):
-            cls = np.asarray(pts.classification)
-            keep = cls == 2       # SOL NU seulement -> DTM propre
-            if not keep.any():
-                continue
-            x = np.asarray(pts.x)[keep]
-            y = np.asarray(pts.y)[keep]
-            z = np.asarray(pts.z)[keep]
-            n_sol += int(keep.sum())
-            ix = np.clip(((x - minx) / grid_m).astype(np.int64), 0, N - 1)
-            iy = np.clip(((y - miny) / grid_m).astype(np.int64), 0, N - 1)
-            np.maximum.at(Zf, iy * N + ix, z)
-    if n_sol == 0:
+    N = Zgrille.shape[0]
+    if not np.isfinite(Zgrille).any():
         fail("aucun point sol (classe 2) dans la fenetre, DTM impossible")
-    Z = Zf.reshape(N, N)
+    Z = Zgrille.copy()
     empty = ~np.isfinite(Z)
     if empty.any():       # rues etroites mal vues du ciel -> beaucoup de trous
         idx = ndimage.distance_transform_edt(empty, return_distances=False,
@@ -441,36 +469,21 @@ def ground_mesh(crop_laz, window, grid_m):
 
 
 # --------------------------------------------- etape 8c : arbres individuels
-def trees_extract(crop_laz, window, Zdtm, dtm_grid_m):
+def trees_extract(vegGrille, window, Zdtm, dtm_grid_m):
     """Arbres INDIVIDUELS depuis les classes vegetation 3-5 : portage de l'algorithme
     navigateur valide (_uhiBuildLidarTrees) : canopee 1 m (lecture en chunks), cimes =
     maxima locaux 5x5 (seuil 2,5 m), houppier = distance ou la canopee retombe sous 25 %
     de la cime (moyenne 4 directions), suppression des jupes du plus haut au plus bas,
     plafond 5000 arbres (les plus hauts d'abord). Sortie : [x_rel, y_rel, z_sol, h, r]
     en metres, x/y RELATIFS AU CENTRE SNAPPE (meme repere que le GLB), z_sol ABSOLU."""
-    import laspy
     from scipy import ndimage
 
     minx, miny, maxx, maxy = window
-    N = int(round(maxx - minx))          # grille canopee fixe 1 m
-    veg = np.full(N * N, -np.inf, dtype=np.float32)
-    n_veg = 0
-    with laspy.open(crop_laz) as rd:
-        for pts in rd.chunk_iterator(4_000_000):
-            cls = np.asarray(pts.classification)
-            keep = (cls >= 3) & (cls <= 5)
-            if not keep.any():
-                continue
-            x = np.asarray(pts.x)[keep]
-            y = np.asarray(pts.y)[keep]
-            z = np.asarray(pts.z)[keep]
-            n_veg += int(keep.sum())
-            ix = np.clip((x - minx).astype(np.int64), 0, N - 1)
-            iy = np.clip((y - miny).astype(np.int64), 0, N - 1)
-            np.maximum.at(veg, iy * N + ix, z.astype(np.float32))
-    if n_veg == 0:
+    #  LA CANOPEE ARRIVE DEJA REMPLIE, accumulee pendant le decoupage.
+    veg = vegGrille
+    N = veg.shape[0]
+    if not np.isfinite(veg).any():
         return []
-    veg = veg.reshape(N, N)
     # sol sous chaque cellule 1 m : plus proche voisin de la grille DTM (pas dtm_grid_m)
     Nd = Zdtm.shape[0]
     ii = np.clip(((np.arange(N) + 0.5) / dtm_grid_m).astype(np.int64), 0, Nd - 1)
@@ -752,18 +765,31 @@ def main():
         os.makedirs(d, exist_ok=True)
 
     # 4. telechargement complet des dalles
-    local_paths = []
+    #  DE FRONT, PAS EN FILE.
+    #
+    #  Chaque dalle coute d abord une attente (l IGN prepare le fichier) puis un
+    #  transfert rapide. En file, les attentes s additionnent. MESURE du
+    #  11/09/2026 sur Lyon (4 dalles, 597 Mo) : 69,8 s en file, 18,9 s de front,
+    #  a 31,7 Mo/s cumules et 1,4 s d attente par dalle.
+    #
+    #  On garde le telechargement ENTIER. La lecture par plages du COPC, plus
+    #  economique en octets (157 Mo au lieu de 597), a ete essayee et ECARTEE :
+    #  l IGN refuse les requetes multiples (429 Too Many Requests) et la meme
+    #  fenetre a demande 291 s au lieu de 91. Ce serveur prefere peu de gros
+    #  transferts, et la mesure tranche contre l intuition.
+    from concurrent.futures import ThreadPoolExecutor
+    local_paths = [os.path.join(DALLES_CACHE, d["name"] if d["name"].endswith(".laz")
+                                else d["url"].split("/")[-1]) for d in dalles]
     with Chrono("4 telechargement dalles"):
-        for d in dalles:
-            dest = os.path.join(DALLES_CACHE, d["name"] if d["name"].endswith(".laz")
-                                else d["url"].split("/")[-1])
-            download_dalle(d["url"], dest)
-            local_paths.append(dest)
+        with ThreadPoolExecutor(max_workers=min(4, len(dalles))) as ex:
+            list(ex.map(lambda a: download_dalle(a[0]["url"], a[1]),
+                        list(zip(dalles, local_paths))))
 
     # 5. crop local + fusion
     crop_laz = os.path.join(WORK, "crop.laz")
+    grid_m = max(1.0, side / 500.0)
     with Chrono("5 crop + fusion"):
-        n_points, n_ground = crop_and_merge(local_paths, window, crop_laz)
+        n_points, n_ground, Zsol, Zveg = crop_and_merge(local_paths, window, crop_laz, grid_m)
 
     # 6. emprises BDTOPO
     footprints = os.path.join(WORK, "footprints.geojson")
@@ -787,12 +813,12 @@ def main():
         log("  %d features maillees, %d sommets, %d triangles"
             % (n_meshed, len(Vb), len(Fb)))
     with Chrono("8b maillage sol"):
-        Vg, Fg, Zg = ground_mesh(crop_laz, window, max(1.0, side / 500.0))
+        Vg, Fg, Zg = ground_mesh(Zsol, window, grid_m)
         log("  sol : %d sommets, %d triangles" % (len(Vg), len(Fg)))
 
     # 8c. arbres individuels (canopee LiDAR) -> glb/<cle>.trees.json
     with Chrono("8c arbres"):
-        arbres = trees_extract(crop_laz, window, Zg, max(1.0, side / 500.0))
+        arbres = trees_extract(Zveg, window, Zg, grid_m)
         trees_path = os.path.join(GLB_DIR, key + ".trees.json")
         with open(trees_path, "w", encoding="utf-8") as f:
             json.dump({"version": 1, "cote_m": int(side), "n": len(arbres), "arbres": arbres},
@@ -801,7 +827,7 @@ def main():
 
     # 8d. grille physique (hauteurs + normales de toit) -> glb/<cle>.phys.gz
     with Chrono("8d grille physique"):
-        Np, Hdm, SLg, AZg, n_bati_cells = phys_rasterize(Vb, Fb, Zg, max(1.0, side / 500.0), window)
+        Np, Hdm, SLg, AZg, n_bati_cells = phys_rasterize(Vb, Fb, Zg, grid_m, window)
         phys_path = os.path.join(GLB_DIR, key + ".phys.gz")
         phys_size = phys_write(phys_path, Np, int(side), Hdm, SLg, AZg)
         log("  %d mailles baties / %d, %s : %.2f Mo"
@@ -826,6 +852,14 @@ def main():
             "lon": round(args.lon, 6),
             "batiments": n_meshed,
             "mo": mo,
+            #  LES CHRONOMETRES DE CE PASSAGE, en secondes par etape, plus le
+            #  nombre de dalles et les points lus : de quoi mesurer le serveur
+            #  depuis n importe ou, et donner de vrais poids a la barre
+            #  d avancement du client.
+            "temps": dict(TEMPS),
+            "total_s": round(time.perf_counter() - t_all, 1),
+            "dalles": len(dalles),
+            "points": n_points,
         }
         update_index(key, entry)
 
