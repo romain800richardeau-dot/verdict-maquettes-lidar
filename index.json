@@ -571,6 +571,36 @@
     },
     "total_s": 144.9
   },
+  "e842300_n6521100_w800": {
+    "arbres": 6369,
+    "batiments": 1999,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-11",
+    "label": "Controle plages",
+    "lat": 45.77466,
+    "lon": 4.831335,
+    "mo": 12.91,
+    "phys": true,
+    "plages": 2,
+    "points": 24544295,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 5.0,
+      "4b lecture par plages": 15.4,
+      "5 crop + fusion": 9.9,
+      "6 emprises BDTOPO": 1.7,
+      "7 roofer": 55.0,
+      "8a maillage batiments": 2.5,
+      "8b maillage sol": 0.8,
+      "8c arbres": 0.1,
+      "8d grille physique": 4.0,
+      "9 export GLB": 0.2
+    },
+    "total_s": 95.7
+  },
   "e842400_n6520700": {
     "arbres": 3158,
     "batiments": 811,
