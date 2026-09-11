@@ -267,6 +267,17 @@
     "mo": 8.76,
     "phys": true
   },
+  "e626800_n6870900_w800": {
+    "arbres": 8707,
+    "batiments": 604,
+    "cote_m": 800,
+    "date": "2026-09-11",
+    "label": "5 Rue des Iselles 78670 Villennes-sur-Seine",
+    "lat": 48.934024,
+    "lon": 2.001068,
+    "mo": 9.8,
+    "phys": true
+  },
   "e640000_n6971500_w800": {
     "arbres": 5725,
     "batiments": 198,
