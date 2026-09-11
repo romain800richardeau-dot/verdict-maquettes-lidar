@@ -106,7 +106,10 @@ def site_geometry(lat, lon, side):
 def wfs_dalles(window):
     params = {
         "SERVICE": "WFS", "VERSION": "2.0.0", "REQUEST": "GetFeature",
-        "TYPENAMES": "IGNF_NUAGES-DE-POINTS-LIDAR-HD:dalle",
+        # L IGN A RENOMME LA COUCHE le 4 septembre 2026 : l ancien espace de
+        # noms IGNF_NUAGES-DE-POINTS-LIDAR-HD n existe plus, le service repond
+        # "Unknown namespace", et TOUTE fabrication echouait depuis cette date.
+        "TYPENAMES": "IGNF_LIDAR-HD_METADONNEE:metadata",
         "OUTPUTFORMAT": "application/json", "COUNT": "500",
         "BBOX": "%f,%f,%f,%f,urn:ogc:def:crs:EPSG::2154" % window,
     }
@@ -115,9 +118,13 @@ def wfs_dalles(window):
     out = []
     for f in r.json().get("features", []):
         p = f.get("properties", {})
-        if p.get("url"):
-            out.append({"name": p.get("name_download") or p["url"].split("/")[-1],
-                        "url": p["url"]})
+        # l adresse de la dalle est desormais dans url_npl (nuage de points
+        # LiDAR) ; le fichier servi reste un .copc.laz, le decoupage local ne
+        # change donc pas.
+        u = p.get("url_npl") or p.get("url")
+        if u:
+            out.append({"name": p.get("name_download") or u.split("/")[-1],
+                        "url": u})
     # deterministe (l'ordre WFS ne l'est pas forcement)
     out.sort(key=lambda d: d["name"])
     return out
