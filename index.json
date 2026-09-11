@@ -146,6 +146,17 @@
     "mo": 8.58,
     "phys": true
   },
+  "e440400_n6516100_w800": {
+    "arbres": 7778,
+    "batiments": 991,
+    "cote_m": 800,
+    "date": "2026-09-11",
+    "label": "Cognac",
+    "lat": 45.694905,
+    "lon": -0.337146,
+    "mo": 9.98,
+    "phys": true
+  },
   "e452700_n6904600_w800": {
     "arbres": 6728,
     "batiments": 364,
