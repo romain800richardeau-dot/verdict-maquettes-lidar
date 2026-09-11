@@ -311,6 +311,36 @@
     "mo": 9.8,
     "phys": true
   },
+  "e648200_n6862300_w1200": {
+    "arbres": 8635,
+    "batiments": 983,
+    "cote_m": 1200,
+    "dalles": 4,
+    "date": "2026-09-11",
+    "label": "5 Avenue Anatole France 75007 Paris",
+    "lat": 48.858819,
+    "lon": 2.294597,
+    "mo": 13.67,
+    "phys": true,
+    "plages": 1,
+    "points": 24499730,
+    "telechargees": 3,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.0,
+      "4 telechargement dalles": 5.7,
+      "4b lecture par plages": 12.7,
+      "5 crop + fusion": 10.9,
+      "6 emprises BDTOPO": 1.7,
+      "7 roofer": 133.4,
+      "8a maillage batiments": 5.7,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.3,
+      "8d grille physique": 9.8,
+      "9 export GLB": 0.2
+    },
+    "total_s": 181.9
+  },
   "e648200_n6862300_w800": {
     "arbres": 7459,
     "batiments": 261,
