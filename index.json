@@ -198,6 +198,36 @@
     "mo": 9.98,
     "phys": true
   },
+  "e441000_n6516000_w800": {
+    "arbres": 5978,
+    "batiments": 2118,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-11",
+    "label": "Rue Aristide Briand 16100 Cognac",
+    "lat": 45.694865,
+    "lon": -0.328769,
+    "mo": 12.75,
+    "phys": true,
+    "plages": 0,
+    "points": 10279256,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.5,
+      "4 telechargement dalles": 4.1,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.4,
+      "6 emprises BDTOPO": 1.1,
+      "7 roofer": 64.3,
+      "8a maillage batiments": 4.0,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.1,
+      "8d grille physique": 6.3,
+      "9 export GLB": 0.2
+    },
+    "total_s": 89.6
+  },
   "e452700_n6904600_w800": {
     "arbres": 6728,
     "batiments": 364,
