@@ -713,6 +713,36 @@
     "lon": 4.8539,
     "mo": 9.58
   },
+  "e844500_n6519300_w1200": {
+    "arbres": 8470,
+    "batiments": 1261,
+    "cote_m": 1200,
+    "dalles": 6,
+    "date": "2026-09-11",
+    "label": "Boulevard Marius Vivier-Merle 69003 Lyon",
+    "lat": 45.757684,
+    "lon": 4.85881,
+    "mo": 14.88,
+    "phys": true,
+    "plages": 0,
+    "points": 61091145,
+    "telechargees": 6,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 12.6,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 33.7,
+      "6 emprises BDTOPO": 1.4,
+      "7 roofer": 287.0,
+      "8a maillage batiments": 5.7,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.3,
+      "8d grille physique": 9.9,
+      "9 export GLB": 0.2
+    },
+    "total_s": 352.3
+  },
   "e844500_n6519400_w1200": {
     "arbres": 8832,
     "batiments": 1297,
