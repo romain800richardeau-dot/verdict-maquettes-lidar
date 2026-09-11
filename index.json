@@ -602,6 +602,17 @@
     "mo": 11.37,
     "phys": true
   },
+  "e849500_n6522400_w800": {
+    "arbres": 7332,
+    "batiments": 1268,
+    "cote_m": 800,
+    "date": "2026-09-11",
+    "label": "12 Rue de l'Egalité 69120 Vaulx-en-Velin",
+    "lat": 45.78515,
+    "lon": 4.923774,
+    "mo": 10.7,
+    "phys": true
+  },
   "e893100_n6247300_w800": {
     "arbres": 5604,
     "batiments": 2840,
