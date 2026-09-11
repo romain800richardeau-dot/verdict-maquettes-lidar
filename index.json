@@ -124,6 +124,17 @@
     "mo": 10.19,
     "phys": true
   },
+  "e426900_n6495200_w600": {
+    "arbres": 8286,
+    "batiments": 23,
+    "cote_m": 600,
+    "date": "2026-09-11",
+    "label": "Controle apres correctif couche LiDAR",
+    "lat": 45.502,
+    "lon": -0.498,
+    "mo": 8.59,
+    "phys": true
+  },
   "e452700_n6904600_w800": {
     "arbres": 6728,
     "batiments": 364,
