@@ -170,12 +170,27 @@ def download_dalle(url, dest):
 # ------------------------------------------- etape 5 : acquisition + crop LAZ
 #  Reglages de l essai par plages. Modifiables par variables d environnement
 #  pour pouvoir mesurer sans repousser le pipeline.
-#  L ESSAI S ETEINT EN UNE LIGNE. Un refus de l IGN n est pas gratuit :
-#  MESURE du 11/09/2026, le 429 a mis 16,4 s a tomber. Si le serveur se fait
-#  refuser lui aussi, chaque fabrication paierait cette avance perdue ; il suffit
-#  alors de poser COPC_ESSAI=0 dans le workflow pour aller droit au
-#  telechargement, sans rien retirer d autre.
-PLAGES_ESSAI = os.environ.get("COPC_ESSAI", "1") != "0"
+#  L ESSAI EST ETEINT, ET VOICI POURQUOI.
+#
+#  La question etait : l IGN accepte-t-il les requetes par plages depuis un
+#  serveur GitHub, alors qu il me les refuse depuis une adresse domestique ?
+#  Le passage #96 y a repondu OUI. Mais il a repondu autre chose, plus decisif.
+#
+#  MESURE DU PASSAGE #96, comparaison faite A L INTERIEUR DU MEME PASSAGE, donc
+#  sur la meme machine, au meme moment, avec le meme reseau :
+#
+#      2 dalles lues par plages   (118,9 + 124,5 Mo)   15,4 s pour ~35 Mo lus
+#      2 dalles telechargees      (163,5 + 190,1 Mo)    5,0 s pour 353,6 Mo
+#
+#  La lecture par plages economise les octets et les paie en allers-retours : a
+#  70 Mo/s, rapatrier la dalle entiere coute moins cher que d en negocier les
+#  morceaux. La regle de budget l a d ailleurs vu seule et s est repliee apres
+#  deux dalles, comme prevu.
+#
+#  On garde donc le code et cette mesure : elle evite de refaire l experience
+#  dans six mois. COPC_ESSAI=1 la rejoue, si le reseau du serveur change ou si
+#  l IGN se met a servir les plages autrement.
+PLAGES_ESSAI = os.environ.get("COPC_ESSAI", "0") != "0"
 PLAGES_BUDGET = float(os.environ.get("COPC_BUDGET", "30"))   # s projetees, au-dela on se replie
 PLAGES_FILS = int(os.environ.get("COPC_FILS", "8"))          # requetes simultanees par dalle
 PLAGES_DELAI = float(os.environ.get("COPC_DELAI", "30"))     # s, delai maximal d une requete
