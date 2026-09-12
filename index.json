@@ -702,6 +702,36 @@
     "mo": 10.93,
     "phys": true
   },
+  "e842500_n6520300_w2000": {
+    "arbres": 8961,
+    "batiments": 5000,
+    "cote_m": 2000,
+    "dalles": 9,
+    "date": "2026-09-12",
+    "label": "Place des Terreaux 69001 Lyon",
+    "lat": 45.767449,
+    "lon": 4.833417,
+    "mo": 27.81,
+    "phys": true,
+    "plages": 0,
+    "points": 130721142,
+    "telechargees": 9,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.0,
+      "4 telechargement dalles": 24.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 54.4,
+      "6 emprises BDTOPO": 1.7,
+      "7 roofer": 301.3,
+      "8a maillage batiments": 22.6,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.5,
+      "8d grille physique": 36.8,
+      "9 export GLB": 0.3
+    },
+    "total_s": 443.7
+  },
   "e842600_n6519300_w800": {
     "arbres": 3867,
     "batiments": 807,
