@@ -885,6 +885,36 @@
     "mo": 11.03,
     "phys": true
   },
+  "e845000_n6318600_w800": {
+    "arbres": 6647,
+    "batiments": 1350,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-12",
+    "label": "Place du Palais 84000 Avignon",
+    "lat": 43.951059,
+    "lon": 4.8063,
+    "mo": 12.73,
+    "phys": true,
+    "plages": 0,
+    "points": 9655013,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 5.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 3.7,
+      "6 emprises BDTOPO": 1.1,
+      "7 roofer": 36.1,
+      "8a maillage batiments": 2.9,
+      "8b maillage sol": 0.2,
+      "8c arbres": 0.1,
+      "8d grille physique": 4.7,
+      "9 export GLB": 0.3
+    },
+    "total_s": 55.8
+  },
   "e847600_n6519900_w800": {
     "arbres": 6599,
     "batiments": 1355,
