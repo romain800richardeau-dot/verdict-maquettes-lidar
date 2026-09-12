@@ -803,6 +803,36 @@
     },
     "total_s": 225.5
   },
+  "e842800_n6520600_w800": {
+    "arbres": 6538,
+    "batiments": 1079,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-12",
+    "label": "17 Quai Andre Lassagne, Lyon 1er",
+    "lat": 45.76976,
+    "lon": 4.837737,
+    "mo": 13.05,
+    "phys": true,
+    "plages": 0,
+    "points": 20902493,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 5.6,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 9.4,
+      "6 emprises BDTOPO": 1.1,
+      "7 roofer": 66.7,
+      "8a maillage batiments": 3.9,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 6.4,
+      "9 export GLB": 0.2
+    },
+    "total_s": 95.1
+  },
   "e843400_n6519600_w800": {
     "arbres": 6008,
     "batiments": 879,
