@@ -261,6 +261,36 @@
     "mo": 8.96,
     "phys": true
   },
+  "e497400_n6612400_w1200": {
+    "arbres": 8885,
+    "batiments": 3618,
+    "cote_m": 1200,
+    "dalles": 9,
+    "date": "2026-09-12",
+    "label": "2 Rue Cornet 86000 Poitiers",
+    "lat": 46.580763,
+    "lon": 0.354074,
+    "mo": 14.92,
+    "phys": true,
+    "plages": 0,
+    "points": 28863064,
+    "telechargees": 9,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.9,
+      "4 telechargement dalles": 14.2,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 16.8,
+      "6 emprises BDTOPO": 2.1,
+      "7 roofer": 77.0,
+      "8a maillage batiments": 4.4,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.3,
+      "8d grille physique": 6.8,
+      "9 export GLB": 0.2
+    },
+    "total_s": 124.1
+  },
   "e505000_n6286100_w800": {
     "arbres": 6335,
     "batiments": 2197,
