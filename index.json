@@ -773,6 +773,36 @@
     "mo": 12.56,
     "phys": true
   },
+  "e842700_n6520400_w800": {
+    "arbres": 5279,
+    "batiments": 1203,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-13",
+    "label": "1 quai du General Sarrail",
+    "lat": 45.768596,
+    "lon": 4.836318,
+    "mo": 13.97,
+    "phys": true,
+    "plages": 0,
+    "points": 19478162,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.9,
+      "4 telechargement dalles": 6.6,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 8.2,
+      "6 emprises BDTOPO": 2.0,
+      "7 roofer": 73.5,
+      "8a maillage batiments": 4.8,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 7.9,
+      "9 export GLB": 0.2
+    },
+    "total_s": 104.6
+  },
   "e842700_n6520500_w1200": {
     "arbres": 8142,
     "batiments": 2461,
