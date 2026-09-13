@@ -239,6 +239,36 @@
     "mo": 9.11,
     "phys": true
   },
+  "e477900_n6509000_w1200": {
+    "arbres": 8700,
+    "batiments": 3319,
+    "cote_m": 1200,
+    "dalles": 4,
+    "date": "2026-09-13",
+    "label": "Angoulême",
+    "lat": 45.644105,
+    "lon": 0.148008,
+    "mo": 13.03,
+    "phys": true,
+    "plages": 0,
+    "points": 26011325,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.4,
+      "4 telechargement dalles": 8.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 16.0,
+      "6 emprises BDTOPO": 1.4,
+      "7 roofer": 65.9,
+      "8a maillage batiments": 5.8,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.4,
+      "8d grille physique": 8.4,
+      "9 export GLB": 0.2
+    },
+    "total_s": 108.3
+  },
   "e484900_n6370400_w800": {
     "arbres": 7820,
     "batiments": 435,
