@@ -721,6 +721,36 @@
     },
     "total_s": 95.7
   },
+  "e842400_n6520300_w800": {
+    "arbres": 4179,
+    "batiments": 1564,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-13",
+    "label": "9 place des Terreaux",
+    "lat": 45.767727,
+    "lon": 4.832897,
+    "mo": 15.74,
+    "phys": true,
+    "plages": 0,
+    "points": 20998691,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.4,
+      "4 telechargement dalles": 5.1,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.6,
+      "6 emprises BDTOPO": 1.5,
+      "7 roofer": 78.1,
+      "8a maillage batiments": 4.9,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 8.0,
+      "9 export GLB": 0.2
+    },
+    "total_s": 107.1
+  },
   "e842400_n6520700": {
     "arbres": 3158,
     "batiments": 811,
