@@ -691,6 +691,36 @@
     "mo": 10.04,
     "phys": true
   },
+  "e744400_n6523900_w800": {
+    "arbres": 8614,
+    "batiments": 114,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-15",
+    "label": "Sapt 63300 Escoutoux",
+    "lat": 45.81363,
+    "lon": 3.57222,
+    "mo": 8.69,
+    "phys": true,
+    "plages": 0,
+    "points": 18894178,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.5,
+      "4 telechargement dalles": 153.4,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 6.1,
+      "6 emprises BDTOPO": 1.0,
+      "7 roofer": 3.3,
+      "8a maillage batiments": 0.1,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 0.2,
+      "9 export GLB": 0.2
+    },
+    "total_s": 166.4
+  },
   "e755700_n6256700_w800": {
     "arbres": 8036,
     "batiments": 1677,
