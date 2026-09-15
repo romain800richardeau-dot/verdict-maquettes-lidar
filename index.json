@@ -47,6 +47,36 @@
     "mo": 11.95,
     "phys": true
   },
+  "e355600_n6692100_w800": {
+    "arbres": 8105,
+    "batiments": 695,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-15",
+    "label": "Nantes",
+    "lat": 47.239367,
+    "lon": -1.555335,
+    "mo": 9.92,
+    "phys": true,
+    "plages": 0,
+    "points": 11847415,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 145.1,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 8.6,
+      "6 emprises BDTOPO": 0.9,
+      "7 roofer": 50.2,
+      "8a maillage batiments": 1.4,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.2,
+      "8d grille physique": 2.3,
+      "9 export GLB": 0.2
+    },
+    "total_s": 210.5
+  },
   "e361700_n6682400_w800": {
     "arbres": 7487,
     "batiments": 331,
