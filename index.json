@@ -461,6 +461,36 @@
     "mo": 9.8,
     "phys": true
   },
+  "e646700_n6875800_w800": {
+    "arbres": 7935,
+    "batiments": 1173,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-09-24",
+    "label": "245 Rue Ferdinand Buisson 95120 Ermont",
+    "lat": 48.979719,
+    "lon": 2.271944,
+    "mo": 10.85,
+    "phys": true,
+    "plages": 0,
+    "points": 12415936,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 435.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 5.5,
+      "6 emprises BDTOPO": 2.8,
+      "7 roofer": 34.3,
+      "8a maillage batiments": 2.8,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.3,
+      "8d grille physique": 4.5,
+      "9 export GLB": 0.2
+    },
+    "total_s": 487.5
+  },
   "e648200_n6862300_w1200": {
     "arbres": 8635,
     "batiments": 983,
