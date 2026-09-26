@@ -633,6 +633,36 @@
     "mo": 16.27,
     "phys": true
   },
+  "e652600_n6860200_w600": {
+    "arbres": 3569,
+    "batiments": 739,
+    "cote_m": 600,
+    "dalles": 2,
+    "date": "2026-09-26",
+    "label": "13 Rue Santeuil 75005 Paris",
+    "lat": 48.840141,
+    "lon": 2.354181,
+    "mo": 11.1,
+    "phys": true,
+    "plages": 0,
+    "points": 6145280,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.3,
+      "4 telechargement dalles": 5.1,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 3.6,
+      "6 emprises BDTOPO": 1.3,
+      "7 roofer": 27.9,
+      "8a maillage batiments": 1.6,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 2.7,
+      "9 export GLB": 0.2
+    },
+    "total_s": 44.2
+  },
   "e654000_n6863100_w800": {
     "arbres": 5074,
     "batiments": 1202,
