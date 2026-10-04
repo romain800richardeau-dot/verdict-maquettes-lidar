@@ -1752,6 +1752,36 @@
     },
     "total_s": 85.6
   },
+  "e770000_n6277800_w800": {
+    "arbres": 8877,
+    "batiments": 859,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-04",
+    "label": "145 Rue Guillaume Janvier 34070 Montpellier",
+    "lat": 43.595832,
+    "lon": 3.866038,
+    "mo": 10.29,
+    "phys": true,
+    "plages": 0,
+    "points": 17317147,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.8,
+      "4 telechargement dalles": 77.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 8.4,
+      "6 emprises BDTOPO": 0.9,
+      "7 roofer": 47.5,
+      "8a maillage batiments": 2.1,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 3.4,
+      "9 export GLB": 0.2
+    },
+    "total_s": 141.6
+  },
   "e808500_n6484300_w800": {
     "arbres": 7400,
     "batiments": 787,
