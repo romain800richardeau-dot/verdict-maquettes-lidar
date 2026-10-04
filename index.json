@@ -1812,6 +1812,36 @@
     },
     "total_s": 68.9
   },
+  "e834500_n6366200_w800": {
+    "arbres": 7639,
+    "batiments": 279,
+    "cote_m": 800,
+    "dalles": 2,
+    "date": "2026-10-04",
+    "label": "4 Chemin de Sérignan 26700 Pierrelatte",
+    "lat": 44.381799,
+    "lon": 4.688722,
+    "mo": 8.97,
+    "phys": true,
+    "plages": 0,
+    "points": 19990903,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.0,
+      "4 telechargement dalles": 4.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 8.6,
+      "6 emprises BDTOPO": 0.7,
+      "7 roofer": 12.5,
+      "8a maillage batiments": 0.5,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 0.8,
+      "9 export GLB": 0.2
+    },
+    "total_s": 29.7
+  },
   "e840500_n6513200_w800": {
     "arbres": 8865,
     "batiments": 503,
