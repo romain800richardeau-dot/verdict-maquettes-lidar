@@ -2355,6 +2355,36 @@
     },
     "total_s": 80.7
   },
+  "e846000_n6521500_w600": {
+    "arbres": 4406,
+    "batiments": 723,
+    "cote_m": 600,
+    "dalles": 2,
+    "date": "2026-10-05",
+    "label": "94 Avenue Roger Salengro 69100 Villeurbanne",
+    "lat": 45.777397,
+    "lon": 4.878606,
+    "mo": 10.21,
+    "phys": true,
+    "plages": 0,
+    "points": 16450700,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.0,
+      "4 telechargement dalles": 4.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.0,
+      "6 emprises BDTOPO": 0.9,
+      "7 roofer": 37.6,
+      "8a maillage batiments": 1.9,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 3.1,
+      "9 export GLB": 0.2
+    },
+    "total_s": 57.0
+  },
   "e847600_n6519900_w800": {
     "arbres": 6599,
     "batiments": 1355,
