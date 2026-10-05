@@ -1741,6 +1741,36 @@
     "mo": 10.04,
     "phys": true
   },
+  "e712200_n6655700_w800": {
+    "arbres": 7998,
+    "batiments": 860,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-05",
+    "label": "31 Rue des Tailles 58000 Nevers",
+    "lat": 47.001347,
+    "lon": 3.160846,
+    "mo": 9.84,
+    "phys": true,
+    "plages": 0,
+    "points": 11179474,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.9,
+      "4 telechargement dalles": 36.3,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 5.0,
+      "6 emprises BDTOPO": 1.1,
+      "7 roofer": 21.3,
+      "8a maillage batiments": 1.0,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.1,
+      "8d grille physique": 1.5,
+      "9 export GLB": 0.2
+    },
+    "total_s": 67.8
+  },
   "e744400_n6523900_w800": {
     "arbres": 8614,
     "batiments": 114,
