@@ -1719,6 +1719,36 @@
     },
     "total_s": 308.8
   },
+  "e711100_n6656500_w800": {
+    "arbres": 6377,
+    "batiments": 883,
+    "cote_m": 800,
+    "dalles": 2,
+    "date": "2026-10-06",
+    "label": "Rue Marcel Turpin 58640 Varennes-Vauzelles",
+    "lat": 47.008241,
+    "lon": 3.146102,
+    "mo": 9.83,
+    "phys": true,
+    "plages": 0,
+    "points": 11424650,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.0,
+      "4 telechargement dalles": 903.1,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 5.9,
+      "6 emprises BDTOPO": 0.8,
+      "7 roofer": 24.5,
+      "8a maillage batiments": 1.7,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 2.4,
+      "9 export GLB": 0.2
+    },
+    "total_s": 940.1
+  },
   "e712100_n6655100_w600": {
     "arbres": 5029,
     "batiments": 842,
