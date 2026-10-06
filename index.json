@@ -1992,6 +1992,36 @@
     },
     "total_s": 68.9
   },
+  "e809600_n6486600_w800": {
+    "arbres": 7453,
+    "batiments": 309,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-06",
+    "label": "Place du Forum 42000 Saint-Étienne",
+    "lat": 45.470113,
+    "lon": 4.402614,
+    "mo": 9.03,
+    "phys": true,
+    "plages": 0,
+    "points": 14491845,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 1483.1,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.2,
+      "6 emprises BDTOPO": 1.1,
+      "7 roofer": 17.2,
+      "8a maillage batiments": 0.6,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 1.0,
+      "9 export GLB": 0.2
+    },
+    "total_s": 1512.1
+  },
   "e834500_n6366200_w800": {
     "arbres": 7639,
     "batiments": 279,
