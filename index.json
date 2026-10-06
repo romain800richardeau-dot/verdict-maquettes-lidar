@@ -651,6 +651,36 @@
     },
     "total_s": 22.1
   },
+  "e488000_n6781600_w2400": {
+    "arbres": 8895,
+    "batiments": 2432,
+    "cote_m": 2400,
+    "dalles": 12,
+    "date": "2026-10-06",
+    "label": "La Bazoge",
+    "lat": 48.100298,
+    "lon": 0.151868,
+    "mo": 12.33,
+    "phys": true,
+    "plages": 0,
+    "points": 127386619,
+    "telechargees": 12,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.7,
+      "4 telechargement dalles": 270.3,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 55.8,
+      "6 emprises BDTOPO": 1.3,
+      "7 roofer": 112.6,
+      "8a maillage batiments": 3.8,
+      "8b maillage sol": 3.6,
+      "8c arbres": 0.6,
+      "8d grille physique": 5.8,
+      "9 export GLB": 0.2
+    },
+    "total_s": 454.8
+  },
   "e497400_n6612400_w1200": {
     "arbres": 8885,
     "batiments": 3618,
