@@ -157,35 +157,98 @@ def wfs_dalles(window):
 
 
 # ------------------------------------------------ etape 4 : telechargements
+#  LA DALLE QUI NE VENAIT PAS (fabrication 199 du 06/10/2026, Paris, 800 m ;
+#  Romain : "fait en sorte que ca n arrive plus"). Sur cinq dalles, une a echoue
+#  trois fois de suite : "504 Gateway Time-out", puis deux connexions coupees en
+#  cours de route (1,5 puis 51,5 Mo recus sur 110). La fabrication est tombee au
+#  bout de 16 minutes, quand la dalle voisine passait en 3,9 s. Chaque essai
+#  repartait de zero, il n y en avait que trois, a 2 puis 4 s d intervalle, et
+#  une lecture qui calait attendait 600 s.
+#
+#  Desormais :
+#    - un essai coupe REPREND OU IL S EST ARRETE : en-tete Range, que le serveur
+#      de l IGN honore (206 et Content-Range, verifie le 05/07/2026), avec
+#      If-Range sur l ETag (ou la date) du premier envoi, pour ne jamais coller
+#      la fin d une dalle mise a jour au debut de l ancienne ;
+#    - DL_ESSAIS essais (8 par defaut), attentes croissantes et un peu
+#      desynchronisees entre fabrications : 5, 10, 20, 40, 60, 60, 60 s ;
+#    - une lecture qui cale 120 s compte pour une coupure (et non 600) ;
+#    - une dalle absente (404) arrete tout de suite, sans essais inutiles ;
+#    - la taille finale est comparee a celle que le serveur annonce.
+DL_ESSAIS = int(os.environ.get("DL_ESSAIS", "8"))
+
+
 def download_dalle(url, dest):
-    """Telechargement complet en stream, cache par taille, 2 reprises."""
+    """Telechargement en stream, cache par taille, reprises a l endroit coupe."""
+    tmp = dest + ".part"
+    if os.path.exists(tmp):
+        os.remove(tmp)        # un reste d une autre fabrication : on ne s y fie pas
     last_err = None
-    for attempt in range(1, 4):
+    total = None              # taille de la dalle, annoncee par le serveur
+    valide = None             # ETag fort (ou date) du premier envoi
+    t0 = None
+    for attempt in range(1, DL_ESSAIS + 1):
+        deja = os.path.getsize(tmp) if os.path.exists(tmp) else 0
         try:
-            with requests.get(url, stream=True, timeout=(30, 600)) as r:
+            entetes = {}
+            if deja:
+                entetes["Range"] = "bytes=%d-" % deja
+                if valide:
+                    entetes["If-Range"] = valide
+            with requests.get(url, stream=True, timeout=(30, 120), headers=entetes) as r:
+                if r.status_code == 404:
+                    fail("dalle absente du serveur (404) : %s" % url)
+                if r.status_code == 416:
+                    os.remove(tmp)    # la plage ne tient plus : on repartira de zero
+                    raise IOError("HTTP 416, reprise impossible")
+                if r.status_code in (429, 500, 502, 503, 504):
+                    raise IOError("HTTP %d" % r.status_code)
                 r.raise_for_status()
-                size = int(r.headers.get("Content-Length", "0") or 0)
-                if size and os.path.exists(dest) and os.path.getsize(dest) == size:
-                    log("  cache OK (%s, %.1f Mo), pas de retelechargement"
-                        % (os.path.basename(dest), size / 1048576.0))
-                    return size, 0.0, True
-                t0 = time.perf_counter()
-                tmp = dest + ".part"
-                with open(tmp, "wb") as f:
+                if deja and r.status_code == 206:
+                    cr = r.headers.get("Content-Range", "")   # "bytes debut-fin/total"
+                    try:
+                        debut = int(cr.split()[1].split("-")[0])
+                        total = int(cr.split("/")[1])
+                    except Exception:
+                        raise IOError("reprise refusee (Content-Range %r)" % cr)
+                    if debut != deja:
+                        raise IOError("reprise a %d au lieu de %d" % (debut, deja))
+                    mode = "ab"
+                else:
+                    #  la dalle entiere : premier essai, reprise refusee par le
+                    #  serveur, ou dalle changee entre deux essais (If-Range)
+                    total = int(r.headers.get("Content-Length", "0") or 0) or None
+                    etag = r.headers.get("ETag")
+                    valide = etag if (etag and not etag.startswith("W/")) else r.headers.get("Last-Modified")
+                    if total and os.path.exists(dest) and os.path.getsize(dest) == total:
+                        log("  cache OK (%s, %.1f Mo), pas de retelechargement"
+                            % (os.path.basename(dest), total / 1048576.0))
+                        return total, 0.0, True
+                    mode = "wb"
+                if t0 is None:
+                    t0 = time.perf_counter()
+                with open(tmp, mode) as f:
                     for chunk in r.iter_content(CHUNK):
                         if chunk:
                             f.write(chunk)
-                got = os.path.getsize(tmp)
-                if size and got != size:
-                    raise IOError("taille incomplete : %d octets sur %d" % (got, size))
-                os.replace(tmp, dest)
-                dt = time.perf_counter() - t0
-                log("  %s : %.1f Mo en %.1f s" % (os.path.basename(dest), got / 1048576.0, dt))
-                return got, dt, False
+            got = os.path.getsize(tmp)
+            if total and got != total:
+                raise IOError("taille incomplete : %d octets sur %d" % (got, total))
+            os.replace(tmp, dest)
+            dt = time.perf_counter() - t0
+            log("  %s : %.1f Mo en %.1f s%s" % (os.path.basename(dest), got / 1048576.0, dt,
+                                               "" if attempt == 1 else " (essai %d)" % attempt))
+            return got, dt, False
         except Exception as e:
             last_err = e
-            log("  tentative %d/3 echouee (%s)" % (attempt, e))
-            time.sleep(2 * attempt)
+            recu = os.path.getsize(tmp) if os.path.exists(tmp) else 0
+            if attempt < DL_ESSAIS:
+                attente = min(60, 5 * 2 ** (attempt - 1)) + (os.getpid() % 5) * 0.4
+                log("  tentative %d/%d echouee (%s) ; %.1f Mo deja recus, reprise dans %.0f s"
+                    % (attempt, DL_ESSAIS, e, recu / 1048576.0, attente))
+                time.sleep(attente)
+            else:
+                log("  tentative %d/%d echouee (%s)" % (attempt, DL_ESSAIS, e))
     fail("telechargement impossible pour %s : %s" % (url, last_err))
 
 
