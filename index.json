@@ -1257,6 +1257,36 @@
     "mo": 13.15,
     "phys": true
   },
+  "e650300_n6848700_w800": {
+    "arbres": 7377,
+    "batiments": 962,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-07",
+    "label": "11 Avenue Eric Morlet 91320 Wissous",
+    "lat": 48.736308,
+    "lon": 2.324395,
+    "mo": 10.15,
+    "phys": true,
+    "plages": 0,
+    "points": 11428477,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.3,
+      "4 telechargement dalles": 3.9,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 5.6,
+      "6 emprises BDTOPO": 0.8,
+      "7 roofer": 24.3,
+      "8a maillage batiments": 2.0,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 3.0,
+      "9 export GLB": 0.2
+    },
+    "total_s": 41.8
+  },
   "e651300_n6860500_w800": {
     "arbres": 6250,
     "batiments": 1045,
