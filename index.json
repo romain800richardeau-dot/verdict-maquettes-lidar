@@ -1473,6 +1473,36 @@
     },
     "total_s": 35.2
   },
+  "e653300_n6862400_w800": {
+    "arbres": 4174,
+    "batiments": 1604,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-07",
+    "label": "Rue de Thorigny 75003 Paris",
+    "lat": 48.859755,
+    "lon": 2.362877,
+    "mo": 15.94,
+    "phys": true,
+    "plages": 0,
+    "points": 10555685,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.0,
+      "4 telechargement dalles": 16.2,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 6.3,
+      "6 emprises BDTOPO": 1.3,
+      "7 roofer": 61.4,
+      "8a maillage batiments": 4.8,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.1,
+      "8d grille physique": 7.9,
+      "9 export GLB": 0.3
+    },
+    "total_s": 99.6
+  },
   "e654000_n6863100_w800": {
     "arbres": 5074,
     "batiments": 1202,
