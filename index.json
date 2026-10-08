@@ -2082,6 +2082,36 @@
     },
     "total_s": 1512.1
   },
+  "e813600_n6505100_w800": {
+    "arbres": 7766,
+    "batiments": 656,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-08",
+    "label": "Rue Pasteur 69590 Saint-Symphorien-sur-Coise",
+    "lat": 45.635799,
+    "lon": 4.458073,
+    "mo": 9.63,
+    "phys": true,
+    "plages": 0,
+    "points": 14519108,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.9,
+      "4 telechargement dalles": 46.4,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 4.9,
+      "6 emprises BDTOPO": 0.8,
+      "7 roofer": 15.6,
+      "8a maillage batiments": 0.6,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 0.8,
+      "9 export GLB": 0.1
+    },
+    "total_s": 70.6
+  },
   "e834500_n6366200_w800": {
     "arbres": 7639,
     "batiments": 279,
