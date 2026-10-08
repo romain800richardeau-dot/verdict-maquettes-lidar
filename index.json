@@ -2022,6 +2022,36 @@
     },
     "total_s": 141.6
   },
+  "e780200_n6695800_w800": {
+    "arbres": 8864,
+    "batiments": 21,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-08",
+    "label": "Abbaye de la Pierre Qui Vire 89630 Saint-Léger-Vauban",
+    "lat": 47.357894,
+    "lon": 4.06313,
+    "mo": 8.66,
+    "phys": true,
+    "plages": 0,
+    "points": 31593704,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 33.9,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 10.3,
+      "6 emprises BDTOPO": 0.8,
+      "7 roofer": 4.9,
+      "8a maillage batiments": 0.0,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.2,
+      "8d grille physique": 0.1,
+      "9 export GLB": 0.1
+    },
+    "total_s": 51.9
+  },
   "e808500_n6484300_w800": {
     "arbres": 7400,
     "batiments": 787,
