@@ -2988,6 +2988,36 @@
     "mo": 14.32,
     "phys": true
   },
+  "e894500_n6248300_w800": {
+    "arbres": 6895,
+    "batiments": 2161,
+    "cote_m": 800,
+    "dalles": 2,
+    "date": "2026-10-12",
+    "label": "9 Impasse ricard digne 13004 Marseille",
+    "lat": 43.307201,
+    "lon": 5.396779,
+    "mo": 11.91,
+    "phys": true,
+    "plages": 0,
+    "points": 23901862,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 16.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.3,
+      "6 emprises BDTOPO": 1.3,
+      "7 roofer": 45.7,
+      "8a maillage batiments": 1.7,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.1,
+      "8d grille physique": 2.6,
+      "9 export GLB": 0.2
+    },
+    "total_s": 77.0
+  },
   "e894600_n6241200_w800": {
     "arbres": 8929,
     "batiments": 868,
