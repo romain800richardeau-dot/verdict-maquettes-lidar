@@ -1604,6 +1604,36 @@
     },
     "total_s": 73.0
   },
+  "e656000_n6878700_w800": {
+    "arbres": 6470,
+    "batiments": 728,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-12",
+    "label": "Place Lalo 95400 Villiers-le-Bel",
+    "lat": 49.006583,
+    "lon": 2.399012,
+    "mo": 9.68,
+    "phys": true,
+    "plages": 0,
+    "points": 11073584,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.7,
+      "4 telechargement dalles": 119.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 5.6,
+      "6 emprises BDTOPO": 0.9,
+      "7 roofer": 24.3,
+      "8a maillage batiments": 1.4,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 2.2,
+      "9 export GLB": 0.2
+    },
+    "total_s": 155.4
+  },
   "e656300_n6862000_w800": {
     "arbres": 8785,
     "batiments": 1315,
