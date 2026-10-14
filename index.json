@@ -1503,6 +1503,36 @@
     },
     "total_s": 35.2
   },
+  "e653100_n6862400_w800": {
+    "arbres": 3727,
+    "batiments": 1728,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-14",
+    "label": "22 Rue de la Perle 75003 Paris",
+    "lat": 48.859912,
+    "lon": 2.361098,
+    "mo": 16.55,
+    "phys": true,
+    "plages": 0,
+    "points": 10463965,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 29.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 5.4,
+      "6 emprises BDTOPO": 0.9,
+      "7 roofer": 78.2,
+      "8a maillage batiments": 6.6,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.1,
+      "8d grille physique": 11.0,
+      "9 export GLB": 0.3
+    },
+    "total_s": 133.5
+  },
   "e653300_n6862400_w800": {
     "arbres": 4174,
     "batiments": 1604,
