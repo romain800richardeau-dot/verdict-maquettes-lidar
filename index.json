@@ -2052,6 +2052,36 @@
     "mo": 11.48,
     "phys": true
   },
+  "e757400_n6267500_w800": {
+    "arbres": 6331,
+    "batiments": 1237,
+    "cote_m": 800,
+    "dalles": 2,
+    "date": "2026-10-14",
+    "label": "29 Rue de l'Evangile 34770 Gigean",
+    "lat": 43.504019,
+    "lon": 3.709539,
+    "mo": 10.44,
+    "phys": true,
+    "plages": 0,
+    "points": 18145211,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 61.9,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 8.4,
+      "6 emprises BDTOPO": 1.2,
+      "7 roofer": 33.8,
+      "8a maillage batiments": 2.4,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.2,
+      "8d grille physique": 3.6,
+      "9 export GLB": 0.2
+    },
+    "total_s": 113.1
+  },
   "e763900_n6273800_w800": {
     "arbres": 6255,
     "batiments": 727,
