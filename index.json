@@ -3138,6 +3138,36 @@
     "mo": 14.32,
     "phys": true
   },
+  "e894100_n6242000_w800": {
+    "arbres": 8336,
+    "batiments": 982,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-19",
+    "label": "Avenue de hambourg 13008 Marseille",
+    "lat": 43.250703,
+    "lon": 5.388398,
+    "mo": 10.57,
+    "phys": true,
+    "plages": 0,
+    "points": 25811340,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 4.8,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.0,
+      "6 emprises BDTOPO": 1.1,
+      "7 roofer": 33.4,
+      "8a maillage batiments": 0.9,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 1.5,
+      "9 export GLB": 0.2
+    },
+    "total_s": 50.5
+  },
   "e894500_n6248300_w800": {
     "arbres": 6895,
     "batiments": 2161,
