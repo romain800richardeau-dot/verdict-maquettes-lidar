@@ -2041,6 +2041,36 @@
     },
     "total_s": 166.4
   },
+  "e749100_n6750400_w800": {
+    "arbres": 6862,
+    "batiments": 179,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-20",
+    "label": "Villeneuve-Saint-Salves",
+    "lat": 47.852206,
+    "lon": 3.656265,
+    "mo": 8.81,
+    "phys": true,
+    "plages": 0,
+    "points": 13301629,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 7.9,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.1,
+      "6 emprises BDTOPO": 0.7,
+      "7 roofer": 6.7,
+      "8a maillage batiments": 0.3,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 0.5,
+      "9 export GLB": 0.2
+    },
+    "total_s": 25.2
+  },
   "e753800_n6257400_w800": {
     "arbres": 7376,
     "batiments": 1114,
