@@ -2142,6 +2142,36 @@
     },
     "total_s": 113.1
   },
+  "e759900_n6690300_w800": {
+    "arbres": 7782,
+    "batiments": 77,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-21",
+    "label": "Luxery 58140 Pouques-Lormes",
+    "lat": 47.3102,
+    "lon": 3.7925,
+    "mo": 8.67,
+    "phys": true,
+    "plages": 0,
+    "points": 19921744,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.9,
+      "4 telechargement dalles": 6.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 10.2,
+      "6 emprises BDTOPO": 0.6,
+      "7 roofer": 6.7,
+      "8a maillage batiments": 0.1,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 0.2,
+      "9 export GLB": 0.2
+    },
+    "total_s": 26.4
+  },
   "e763900_n6273800_w800": {
     "arbres": 6255,
     "batiments": 727,
