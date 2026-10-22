@@ -3015,6 +3015,36 @@
     },
     "total_s": 57.0
   },
+  "e846700_n6521400_w800": {
+    "arbres": 7469,
+    "batiments": 1657,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-22",
+    "label": "65 Rue Château Gaillard 69100 Villeurbanne",
+    "lat": 45.77633,
+    "lon": 4.887672,
+    "mo": 11.33,
+    "phys": true,
+    "plages": 0,
+    "points": 28293089,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.6,
+      "4 telechargement dalles": 7.2,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 16.0,
+      "6 emprises BDTOPO": 1.3,
+      "7 roofer": 65.9,
+      "8a maillage batiments": 2.9,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 4.3,
+      "9 export GLB": 0.2
+    },
+    "total_s": 100.0
+  },
   "e847600_n6519900_w800": {
     "arbres": 6599,
     "batiments": 1355,
