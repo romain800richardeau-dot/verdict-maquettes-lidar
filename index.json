@@ -2041,6 +2041,36 @@
     },
     "total_s": 166.4
   },
+  "e748300_n6750700_w800": {
+    "arbres": 8845,
+    "batiments": 158,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-22",
+    "label": "Rue des Belles Filles 89230 Villeneuve-Saint-Salves",
+    "lat": 47.85479,
+    "lon": 3.645649,
+    "mo": 8.77,
+    "phys": true,
+    "plages": 0,
+    "points": 18447264,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 5.9,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 12.6,
+      "6 emprises BDTOPO": 0.8,
+      "7 roofer": 7.3,
+      "8a maillage batiments": 0.2,
+      "8b maillage sol": 0.6,
+      "8c arbres": 0.2,
+      "8d grille physique": 0.3,
+      "9 export GLB": 0.2
+    },
+    "total_s": 29.4
+  },
   "e749100_n6750400_w800": {
     "arbres": 6862,
     "batiments": 179,
