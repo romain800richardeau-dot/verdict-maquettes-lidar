@@ -924,6 +924,36 @@
     "mo": 8.6,
     "phys": true
   },
+  "e614200_n6756900_w800": {
+    "arbres": 1406,
+    "batiments": 124,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-23",
+    "label": "21 Rue Henri Dunant 45140 Ingré",
+    "lat": 47.907205,
+    "lon": 1.851727,
+    "mo": 8.83,
+    "phys": true,
+    "plages": 0,
+    "points": 9425990,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.8,
+      "4 telechargement dalles": 4.2,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 3.3,
+      "6 emprises BDTOPO": 0.8,
+      "7 roofer": 25.6,
+      "8a maillage batiments": 0.1,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.0,
+      "8d grille physique": 0.3,
+      "9 export GLB": 0.2
+    },
+    "total_s": 36.7
+  },
   "e614600_n6757000_w1200": {
     "arbres": 5698,
     "batiments": 692,
