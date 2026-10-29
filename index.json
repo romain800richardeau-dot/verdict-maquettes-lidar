@@ -361,6 +361,36 @@
     },
     "total_s": 23.2
   },
+  "e401700_n6921100_w800": {
+    "arbres": 5958,
+    "batiments": 918,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-29",
+    "label": "1 Rue du Docteur Touraille 14230 Isigny-sur-Mer",
+    "lat": 49.319406,
+    "lon": -1.104061,
+    "mo": 9.99,
+    "phys": true,
+    "plages": 0,
+    "points": 10227826,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.9,
+      "4 telechargement dalles": 13.8,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 4.3,
+      "6 emprises BDTOPO": 1.4,
+      "7 roofer": 17.0,
+      "8a maillage batiments": 1.1,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.1,
+      "8d grille physique": 1.6,
+      "9 export GLB": 0.2
+    },
+    "total_s": 40.8
+  },
   "e410700_n6417900_w600": {
     "arbres": 6915,
     "batiments": 464,
