@@ -1814,6 +1814,36 @@
     },
     "total_s": 82.7
   },
+  "e655000_n6851900_w800": {
+    "arbres": 7593,
+    "batiments": 1159,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-10-30",
+    "label": "53 Rue Maurepas 94320 Thiais",
+    "lat": 48.76579,
+    "lon": 2.387152,
+    "mo": 10.76,
+    "phys": true,
+    "plages": 0,
+    "points": 10834739,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 8.4,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 6.8,
+      "6 emprises BDTOPO": 1.5,
+      "7 roofer": 31.3,
+      "8a maillage batiments": 1.8,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 2.8,
+      "9 export GLB": 0.2
+    },
+    "total_s": 54.5
+  },
   "e655200_n6864800_w800": {
     "arbres": 8677,
     "batiments": 1235,
