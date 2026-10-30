@@ -3629,6 +3629,36 @@
     "mo": 11.55,
     "phys": true
   },
+  "e898000_n6273200": {
+    "arbres": 2201,
+    "batiments": 1319,
+    "cote_m": 500,
+    "dalles": 4,
+    "date": "2026-10-30",
+    "label": "8 Rue du Griffon 13100 Aix-en-Provence",
+    "lat": 43.530653,
+    "lon": 5.448805,
+    "mo": 12.11,
+    "phys": true,
+    "plages": 0,
+    "points": 4986105,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.6,
+      "4 telechargement dalles": 5.2,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 3.0,
+      "6 emprises BDTOPO": 1.6,
+      "7 roofer": 30.7,
+      "8a maillage batiments": 4.3,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.0,
+      "8d grille physique": 6.7,
+      "9 export GLB": 0.2
+    },
+    "total_s": 53.8
+  },
   "e901600_n6252300_w800": {
     "arbres": 8572,
     "batiments": 791,
