@@ -3034,6 +3034,36 @@
     },
     "total_s": 122.7
   },
+  "e843600_n6518400_w800": {
+    "arbres": 7546,
+    "batiments": 1260,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-01",
+    "label": "95 Rue Montesquieu 69007 Lyon",
+    "lat": 45.75019,
+    "lon": 4.846964,
+    "mo": 13.02,
+    "phys": true,
+    "plages": 0,
+    "points": 29877878,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.3,
+      "4 telechargement dalles": 6.0,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 15.1,
+      "6 emprises BDTOPO": 1.1,
+      "7 roofer": 72.0,
+      "8a maillage batiments": 2.9,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 4.7,
+      "9 export GLB": 0.2
+    },
+    "total_s": 103.7
+  },
   "e844100_n6518800_w600": {
     "arbres": 5111,
     "batiments": 484,
