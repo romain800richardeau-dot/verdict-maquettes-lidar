@@ -2783,6 +2783,36 @@
     "mo": 9.77,
     "phys": true
   },
+  "e841100_n6517500": {
+    "arbres": 2856,
+    "batiments": 47,
+    "cote_m": 500,
+    "dalles": 2,
+    "date": "2026-11-02",
+    "label": "Quai Jean-Jacques Rousseau 69350 La Mulatière",
+    "lat": 45.742766,
+    "lon": 4.81422,
+    "mo": 8.9,
+    "phys": true,
+    "plages": 0,
+    "points": 5164662,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.7,
+      "4 telechargement dalles": 2.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 2.6,
+      "6 emprises BDTOPO": 0.9,
+      "7 roofer": 13.4,
+      "8a maillage batiments": 0.4,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.1,
+      "8d grille physique": 0.6,
+      "9 export GLB": 0.2
+    },
+    "total_s": 22.0
+  },
   "e842000_n6518400_w800": {
     "arbres": 5033,
     "batiments": 752,
