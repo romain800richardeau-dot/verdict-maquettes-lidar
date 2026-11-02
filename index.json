@@ -1339,6 +1339,36 @@
     },
     "total_s": 100.1
   },
+  "e645500_n6858600": {
+    "arbres": 4893,
+    "batiments": 188,
+    "cote_m": 500,
+    "dalles": 1,
+    "date": "2026-11-02",
+    "label": "Promenade des Chartreux 92130 Issy-les-Moulineaux",
+    "lat": 48.825069,
+    "lon": 2.25718,
+    "mo": 9.18,
+    "phys": true,
+    "plages": 0,
+    "points": 4738392,
+    "telechargees": 1,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.2,
+      "4 telechargement dalles": 2.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 2.3,
+      "6 emprises BDTOPO": 0.7,
+      "7 roofer": 10.1,
+      "8a maillage batiments": 0.4,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.1,
+      "8d grille physique": 0.7,
+      "9 export GLB": 0.2
+    },
+    "total_s": 18.6
+  },
   "e645800_n6846900_w600": {
     "arbres": 5000,
     "batiments": 175,
