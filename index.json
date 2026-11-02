@@ -301,6 +301,36 @@
     "mo": 13.12,
     "phys": true
   },
+  "e387100_n6511800": {
+    "arbres": 3666,
+    "batiments": 358,
+    "cote_m": 500,
+    "dalles": 4,
+    "date": "2026-11-02",
+    "label": "Royan",
+    "lat": 45.634186,
+    "lon": -1.017415,
+    "mo": 9.12,
+    "phys": true,
+    "plages": 0,
+    "points": 3285543,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.7,
+      "4 telechargement dalles": 831.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 1.8,
+      "6 emprises BDTOPO": 1.3,
+      "7 roofer": 11.6,
+      "8a maillage batiments": 0.7,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.1,
+      "8d grille physique": 1.1,
+      "9 export GLB": 0.2
+    },
+    "total_s": 850.6
+  },
   "e389800_n6409300": {
     "arbres": 8248,
     "batiments": 87,
