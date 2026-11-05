@@ -1451,6 +1451,36 @@
     },
     "total_s": 42.2
   },
+  "e646700_n6868400_w800": {
+    "arbres": 6379,
+    "batiments": 1908,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-05",
+    "label": "Place Gabriel Péri 92270 Bois-Colombes",
+    "lat": 48.913703,
+    "lon": 2.272641,
+    "mo": 12.86,
+    "phys": true,
+    "plages": 0,
+    "points": 11415465,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.6,
+      "4 telechargement dalles": 217.4,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.4,
+      "6 emprises BDTOPO": 1.2,
+      "7 roofer": 46.3,
+      "8a maillage batiments": 4.1,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 7.2,
+      "9 export GLB": 0.2
+    },
+    "total_s": 285.1
+  },
   "e646700_n6875800_w800": {
     "arbres": 7935,
     "batiments": 1173,
