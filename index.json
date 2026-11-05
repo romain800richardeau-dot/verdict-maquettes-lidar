@@ -577,6 +577,36 @@
     "mo": 8.58,
     "phys": true
   },
+  "e440200_n6516200": {
+    "arbres": 3843,
+    "batiments": 534,
+    "cote_m": 500,
+    "dalles": 4,
+    "date": "2026-11-05",
+    "label": "8 Résidence Saint Fiacre 16100 Cognac",
+    "lat": 45.696244,
+    "lon": -0.340044,
+    "mo": 9.23,
+    "phys": true,
+    "plages": 0,
+    "points": 3502388,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.0,
+      "4 telechargement dalles": 7.2,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 1.6,
+      "6 emprises BDTOPO": 0.7,
+      "7 roofer": 6.2,
+      "8a maillage batiments": 0.3,
+      "8b maillage sol": 0.2,
+      "8c arbres": 0.0,
+      "8d grille physique": 0.5,
+      "9 export GLB": 0.1
+    },
+    "total_s": 17.9
+  },
   "e440400_n6516100_w1200": {
     "arbres": 8794,
     "batiments": 2815,
