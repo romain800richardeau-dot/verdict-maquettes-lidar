@@ -3656,6 +3656,36 @@
     },
     "total_s": 211.1
   },
+  "e849500_n6522400_w1400": {
+    "arbres": 8965,
+    "batiments": 2735,
+    "cote_m": 1400,
+    "dalles": 9,
+    "date": "2026-11-05",
+    "label": "12 Rue de l'Egalité 69120 Vaulx-en-Velin",
+    "lat": 45.78515,
+    "lon": 4.923774,
+    "mo": 14.02,
+    "phys": true,
+    "plages": 0,
+    "points": 83036915,
+    "telechargees": 9,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.3,
+      "4 telechargement dalles": 75.2,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 32.7,
+      "6 emprises BDTOPO": 1.0,
+      "7 roofer": 356.5,
+      "8a maillage batiments": 5.1,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.4,
+      "8d grille physique": 7.9,
+      "9 export GLB": 0.2
+    },
+    "total_s": 480.7
+  },
   "e849500_n6522400_w800": {
     "arbres": 7332,
     "batiments": 1268,
