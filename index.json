@@ -3263,6 +3263,36 @@
     },
     "total_s": 95.1
   },
+  "e843100_n6519000": {
+    "arbres": 2385,
+    "batiments": 396,
+    "cote_m": 500,
+    "dalles": 4,
+    "date": "2026-11-06",
+    "label": "4 Cours Gambetta 69007 Lyon",
+    "lat": 45.75572,
+    "lon": 4.841163,
+    "mo": 10.19,
+    "phys": true,
+    "plages": 0,
+    "points": 9115182,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.3,
+      "4 telechargement dalles": 463.4,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 4.3,
+      "6 emprises BDTOPO": 0.9,
+      "7 roofer": 24.1,
+      "8a maillage batiments": 1.8,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.1,
+      "8d grille physique": 3.1,
+      "9 export GLB": 0.2
+    },
+    "total_s": 499.5
+  },
   "e843100_n6520300_w800": {
     "arbres": 7350,
     "batiments": 766,
