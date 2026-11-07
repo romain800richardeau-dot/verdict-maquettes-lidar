@@ -1,0 +1,2 @@
+Gabarit de demande : copier la ligne JSON ci-dessous dans un fichier requests/<nom>.json (extension .json obligatoire), le committer sur main, et le workflow construira la maquette puis supprimera le fichier.
+{"lat":45.77,"lon":4.83,"label":"exemple"}

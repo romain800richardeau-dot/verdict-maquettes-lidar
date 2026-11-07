@@ -1,0 +1,7 @@
+requests
+laspy[lazrs]
+pyproj
+numpy
+scipy
+trimesh
+mapbox_earcut
