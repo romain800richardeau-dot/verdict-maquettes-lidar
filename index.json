@@ -2024,6 +2024,36 @@
     "mo": 14.49,
     "phys": true
   },
+  "e654600_n6840000_w800": {
+    "arbres": 7949,
+    "batiments": 1051,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-09",
+    "label": "Grigny",
+    "lat": 48.658575,
+    "lon": 2.383586,
+    "mo": 10.13,
+    "phys": true,
+    "plages": 0,
+    "points": 11884449,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.7,
+      "4 telechargement dalles": 12.8,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 5.6,
+      "6 emprises BDTOPO": 1.0,
+      "7 roofer": 23.6,
+      "8a maillage batiments": 2.0,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.2,
+      "8d grille physique": 3.0,
+      "9 export GLB": 0.2
+    },
+    "total_s": 49.4
+  },
   "e654700_n6863200_w800": {
     "arbres": 8125,
     "batiments": 1068,
