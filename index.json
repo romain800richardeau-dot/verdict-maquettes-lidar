@@ -962,6 +962,36 @@
     },
     "total_s": 70.7
   },
+  "e562000_n6661900_w800": {
+    "arbres": 6289,
+    "batiments": 10,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-12",
+    "label": "Loché-sur-Indrois",
+    "lat": 47.043042,
+    "lon": 1.182279,
+    "mo": 8.58,
+    "phys": true,
+    "plages": 0,
+    "points": 18661774,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 12.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 7.0,
+      "6 emprises BDTOPO": 0.4,
+      "7 roofer": 5.6,
+      "8a maillage batiments": 0.0,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 0.0,
+      "9 export GLB": 0.1
+    },
+    "total_s": 27.4
+  },
   "e570100_n6283300_w800": {
     "arbres": 6735,
     "batiments": 1317,
