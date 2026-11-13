@@ -921,6 +921,36 @@
     },
     "total_s": 454.8
   },
+  "e492000_n6935600": {
+    "arbres": 1477,
+    "batiments": 380,
+    "cote_m": 500,
+    "dalles": 2,
+    "date": "2026-11-13",
+    "label": "Le Havre",
+    "lat": 49.485746,
+    "lon": 0.129908,
+    "mo": 9.41,
+    "phys": true,
+    "plages": 0,
+    "points": 6942630,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 3.2,
+      "4 telechargement dalles": 29.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 3.4,
+      "6 emprises BDTOPO": 0.6,
+      "7 roofer": 21.7,
+      "8a maillage batiments": 1.0,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.0,
+      "8d grille physique": 1.6,
+      "9 export GLB": 0.2
+    },
+    "total_s": 61.7
+  },
   "e497400_n6612400_w1200": {
     "arbres": 8885,
     "batiments": 3618,
