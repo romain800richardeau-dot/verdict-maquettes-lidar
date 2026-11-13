@@ -2477,6 +2477,36 @@
     },
     "total_s": 30.3
   },
+  "e663400_n6906400": {
+    "arbres": 3055,
+    "batiments": 35,
+    "cote_m": 500,
+    "dalles": 1,
+    "date": "2026-11-13",
+    "label": "Creil",
+    "lat": 49.256212,
+    "lon": 2.497325,
+    "mo": 8.64,
+    "phys": true,
+    "plages": 0,
+    "points": 4006951,
+    "telechargees": 1,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.9,
+      "4 telechargement dalles": 3.0,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 1.7,
+      "6 emprises BDTOPO": 0.5,
+      "7 roofer": 4.3,
+      "8a maillage batiments": 0.0,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.0,
+      "8d grille physique": 0.1,
+      "9 export GLB": 0.1
+    },
+    "total_s": 11.1
+  },
   "e663700_n6882800_w800": {
     "arbres": 8099,
     "batiments": 1568,
