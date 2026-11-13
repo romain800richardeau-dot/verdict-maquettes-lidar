@@ -484,6 +484,36 @@
     "mo": 10.19,
     "phys": true
   },
+  "e416600_n6423400": {
+    "arbres": 3372,
+    "batiments": 1184,
+    "cote_m": 500,
+    "dalles": 1,
+    "date": "2026-11-13",
+    "label": "Bordeaux",
+    "lat": 44.851808,
+    "lon": -0.588222,
+    "mo": 10.84,
+    "phys": true,
+    "plages": 0,
+    "points": 3689956,
+    "telechargees": 1,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.6,
+      "4 telechargement dalles": 2.3,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 1.6,
+      "6 emprises BDTOPO": 0.7,
+      "7 roofer": 15.4,
+      "8a maillage batiments": 1.6,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 2.6,
+      "9 export GLB": 0.2
+    },
+    "total_s": 25.3
+  },
   "e417300_n6421600_w800": {
     "arbres": 5097,
     "batiments": 2454,
