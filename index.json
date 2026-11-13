@@ -1303,6 +1303,36 @@
     },
     "total_s": 69.4
   },
+  "e585000_n6886300_w900": {
+    "arbres": 3078,
+    "batiments": 27,
+    "cote_m": 900,
+    "dalles": 4,
+    "date": "2026-11-13",
+    "label": "Douains",
+    "lat": 49.066244,
+    "lon": 1.426245,
+    "mo": 8.63,
+    "phys": true,
+    "plages": 0,
+    "points": 19489238,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.8,
+      "4 telechargement dalles": 21.2,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 8.5,
+      "6 emprises BDTOPO": 0.5,
+      "7 roofer": 12.3,
+      "8a maillage batiments": 0.0,
+      "8b maillage sol": 0.6,
+      "8c arbres": 0.1,
+      "8d grille physique": 0.1,
+      "9 export GLB": 0.1
+    },
+    "total_s": 45.2
+  },
   "e586100_n6652900_w800": {
     "arbres": 1596,
     "batiments": 4,
