@@ -2133,6 +2133,36 @@
     "mo": 16.27,
     "phys": true
   },
+  "e652100_n6862300": {
+    "arbres": 2029,
+    "batiments": 484,
+    "cote_m": 500,
+    "dalles": 2,
+    "date": "2026-11-16",
+    "label": "Paris",
+    "lat": 48.858953,
+    "lon": 2.347141,
+    "mo": 11.22,
+    "phys": true,
+    "plages": 0,
+    "points": 4129488,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 3.6,
+      "4 telechargement dalles": 3.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 2.2,
+      "6 emprises BDTOPO": 1.5,
+      "7 roofer": 20.3,
+      "8a maillage batiments": 1.6,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.0,
+      "8d grille physique": 2.6,
+      "9 export GLB": 0.2
+    },
+    "total_s": 35.9
+  },
   "e652600_n6860200_w600": {
     "arbres": 3569,
     "batiments": 739,
