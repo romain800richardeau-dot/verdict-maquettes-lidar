@@ -4652,6 +4652,36 @@
     "mo": 8.81,
     "phys": true
   },
+  "e913000_n6456700": {
+    "arbres": 4699,
+    "batiments": 478,
+    "cote_m": 500,
+    "dalles": 2,
+    "date": "2026-11-17",
+    "label": "Grenoble",
+    "lat": 45.176682,
+    "lon": 5.712152,
+    "mo": 9.76,
+    "phys": true,
+    "plages": 0,
+    "points": 5376302,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 49.8,
+      "4 telechargement dalles": 39.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 1.8,
+      "6 emprises BDTOPO": 6.9,
+      "7 roofer": 10.7,
+      "8a maillage batiments": 0.6,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.1,
+      "8d grille physique": 1.0,
+      "9 export GLB": 0.2
+    },
+    "total_s": 110.9
+  },
   "e914100_n6927700_w3200": {
     "arbres": 8897,
     "batiments": 2605,
