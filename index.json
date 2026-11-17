@@ -4783,6 +4783,36 @@
     "mo": 11.44,
     "phys": true
   },
+  "e923200_n6508100_w800": {
+    "arbres": 8016,
+    "batiments": 134,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-17",
+    "label": "La Motte-Servolex",
+    "lat": 45.635982,
+    "lon": 5.865661,
+    "mo": 8.77,
+    "phys": true,
+    "plages": 0,
+    "points": 17032879,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 12.9,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 5.3,
+      "6 emprises BDTOPO": 0.9,
+      "7 roofer": 4.7,
+      "8a maillage batiments": 0.1,
+      "8b maillage sol": 0.2,
+      "8c arbres": 0.1,
+      "8d grille physique": 0.2,
+      "9 export GLB": 0.1
+    },
+    "total_s": 25.7
+  },
   "e923600_n6509300_w800": {
     "arbres": 7790,
     "batiments": 93,
