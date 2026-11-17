@@ -3743,6 +3743,36 @@
     },
     "total_s": 95.1
   },
+  "e842900_n6518000_w800": {
+    "arbres": 5251,
+    "batiments": 709,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-17",
+    "label": "Lyon",
+    "lat": 45.746627,
+    "lon": 4.838125,
+    "mo": 11.42,
+    "phys": true,
+    "plages": 0,
+    "points": 21841342,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 3.5,
+      "4 telechargement dalles": 6.7,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 9.3,
+      "6 emprises BDTOPO": 6.4,
+      "7 roofer": 68.0,
+      "8a maillage batiments": 3.2,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.1,
+      "8d grille physique": 5.4,
+      "9 export GLB": 0.2
+    },
+    "total_s": 103.5
+  },
   "e843100_n6519000": {
     "arbres": 2385,
     "batiments": 396,
