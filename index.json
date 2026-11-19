@@ -2971,6 +2971,36 @@
     },
     "total_s": 67.8
   },
+  "e712400_n6654700": {
+    "arbres": 2505,
+    "batiments": 846,
+    "cote_m": 500,
+    "dalles": 1,
+    "date": "2026-11-19",
+    "label": "Nevers",
+    "lat": 46.992404,
+    "lon": 3.163164,
+    "mo": 10.91,
+    "phys": true,
+    "plages": 0,
+    "points": 5009619,
+    "telechargees": 1,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 3.2,
+      "4 telechargement dalles": 9.9,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 3.4,
+      "6 emprises BDTOPO": 1.1,
+      "7 roofer": 27.0,
+      "8a maillage batiments": 1.8,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.0,
+      "8d grille physique": 2.8,
+      "9 export GLB": 0.2
+    },
+    "total_s": 49.9
+  },
   "e712600_n6654700": {
     "arbres": 3250,
     "batiments": 825,
