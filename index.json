@@ -2837,6 +2837,36 @@
     },
     "total_s": 51.4
   },
+  "e670500_n6350300_w900": {
+    "arbres": 8846,
+    "batiments": 28,
+    "cote_m": 900,
+    "dalles": 2,
+    "date": "2026-11-23",
+    "label": "Trémouilles",
+    "lat": 44.251095,
+    "lon": 2.630569,
+    "mo": 8.59,
+    "phys": true,
+    "plages": 0,
+    "points": 25557491,
+    "telechargees": 2,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 2.2,
+      "4 telechargement dalles": 101.5,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 14.4,
+      "6 emprises BDTOPO": 0.5,
+      "7 roofer": 4.1,
+      "8a maillage batiments": 0.0,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.3,
+      "8d grille physique": 0.1,
+      "9 export GLB": 0.2
+    },
+    "total_s": 123.5
+  },
   "e680300_n6402700_w3200": {
     "arbres": 8984,
     "batiments": 256,
