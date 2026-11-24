@@ -1554,6 +1554,36 @@
     "mo": 8.6,
     "phys": true
   },
+  "e596900_n6743500_w1000": {
+    "arbres": 8786,
+    "batiments": 1031,
+    "cote_m": 1000,
+    "dalles": 6,
+    "date": "2026-11-24",
+    "label": "Beaugency",
+    "lat": 47.783804,
+    "lon": 1.623131,
+    "mo": 10.19,
+    "phys": true,
+    "plages": 0,
+    "points": 17927378,
+    "telechargees": 6,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.9,
+      "4 telechargement dalles": 19.0,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 8.9,
+      "6 emprises BDTOPO": 1.0,
+      "7 roofer": 31.6,
+      "8a maillage batiments": 2.0,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.3,
+      "8d grille physique": 3.2,
+      "9 export GLB": 0.2
+    },
+    "total_s": 67.5
+  },
   "e611000_n6751300_w800": {
     "arbres": 7789,
     "batiments": 162,
