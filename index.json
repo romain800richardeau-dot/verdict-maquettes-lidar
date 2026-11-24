@@ -3522,6 +3522,36 @@
     },
     "total_s": 85.6
   },
+  "e764700_n6283200_w800": {
+    "arbres": 8474,
+    "batiments": 1031,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-24",
+    "label": "Grabels",
+    "lat": 43.644888,
+    "lon": 3.80169,
+    "mo": 10.51,
+    "phys": true,
+    "plages": 0,
+    "points": 30750931,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 2.8,
+      "4 telechargement dalles": 23.4,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 10.4,
+      "6 emprises BDTOPO": 1.0,
+      "7 roofer": 32.2,
+      "8a maillage batiments": 1.4,
+      "8b maillage sol": 0.3,
+      "8c arbres": 0.2,
+      "8d grille physique": 2.2,
+      "9 export GLB": 0.1
+    },
+    "total_s": 74.0
+  },
   "e770000_n6277800_w800": {
     "arbres": 8877,
     "batiments": 859,
