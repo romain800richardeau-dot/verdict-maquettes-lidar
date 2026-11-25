@@ -3732,6 +3732,36 @@
     },
     "total_s": 70.6
   },
+  "e831400_n6544700_w800": {
+    "arbres": 7827,
+    "batiments": 572,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-25",
+    "label": "Gleizé",
+    "lat": 45.989316,
+    "lon": 4.69763,
+    "mo": 9.65,
+    "phys": true,
+    "plages": 0,
+    "points": 19092822,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 0.8,
+      "4 telechargement dalles": 32.9,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 8.2,
+      "6 emprises BDTOPO": 0.6,
+      "7 roofer": 16.6,
+      "8a maillage batiments": 0.7,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.1,
+      "8d grille physique": 1.0,
+      "9 export GLB": 0.1
+    },
+    "total_s": 61.7
+  },
   "e834500_n6366200_w800": {
     "arbres": 7639,
     "batiments": 279,
