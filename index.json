@@ -1808,6 +1808,36 @@
     },
     "total_s": 49
   },
+  "e637400_n6865600_w900": {
+    "arbres": 8736,
+    "batiments": 1628,
+    "cote_m": 900,
+    "dalles": 4,
+    "date": "2026-11-25",
+    "label": "Le Vésinet",
+    "lat": 48.887368,
+    "lon": 2.146313,
+    "mo": 11.23,
+    "phys": true,
+    "plages": 0,
+    "points": 16308211,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.1,
+      "4 telechargement dalles": 12.0,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 9.5,
+      "6 emprises BDTOPO": 1.3,
+      "7 roofer": 31.5,
+      "8a maillage batiments": 2.2,
+      "8b maillage sol": 0.4,
+      "8c arbres": 0.3,
+      "8d grille physique": 3.3,
+      "9 export GLB": 0.2
+    },
+    "total_s": 61.8
+  },
   "e640000_n6971500_w800": {
     "arbres": 5725,
     "batiments": 198,
