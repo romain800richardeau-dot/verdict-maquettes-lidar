@@ -4867,6 +4867,36 @@
     },
     "total_s": 320.1
   },
+  "e892800_n6247600_w800": {
+    "arbres": 4734,
+    "batiments": 1982,
+    "cote_m": 800,
+    "dalles": 4,
+    "date": "2026-11-26",
+    "label": "Marseille",
+    "lat": 43.301467,
+    "lon": 5.375054,
+    "mo": 13.2,
+    "phys": true,
+    "plages": 0,
+    "points": 22015998,
+    "telechargees": 4,
+    "temps": {
+      "1 geometrie": 0.0,
+      "2 dalles WFS": 1.5,
+      "4 telechargement dalles": 18.8,
+      "4b lecture par plages": 0.0,
+      "5 crop + fusion": 10.8,
+      "6 emprises BDTOPO": 1.5,
+      "7 roofer": 86.5,
+      "8a maillage batiments": 5.4,
+      "8b maillage sol": 0.5,
+      "8c arbres": 0.1,
+      "8d grille physique": 9.0,
+      "9 export GLB": 0.2
+    },
+    "total_s": 134.4
+  },
   "e893100_n6247300_w800": {
     "arbres": 5604,
     "batiments": 2840,
